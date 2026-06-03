@@ -1,0 +1,2341 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>Univers Construction | Excellence BTP & CMS Intégré</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- ARCHITECTURE DES VARIABLES & DESIGN SYSTEM --- */
+        :root[data-theme="light"] {
+            --primary: #0A2540;       
+            --primary-rgb: 10, 37, 64;
+            --accent: #D4AF37;        
+            --accent-hover: #AA841A;
+            --whatsapp: #25D366;
+            --bg-main: #FFFFFF;
+            --bg-surface: #F8FAFC;
+            --bg-card: #FFFFFF;
+            --text-main: #0F172A;
+            --text-muted: #475569;
+            --border: #E2E8F0;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.02);
+            --shadow: 0 10px 30px -10px rgba(10, 37, 64, 0.08);
+            --shadow-lg: 0 20px 40px -15px rgba(10, 37, 64, 0.12);
+            --header-bg: rgba(255, 255, 255, 0.9);
+            --danger: #EF4444;
+            --success: #10B981;
+        }
+
+        :root[data-theme="dark"] {
+            --primary: #00D4B2;       
+            --primary-rgb: 0, 212, 178;
+            --accent: #E5C158;        
+            --accent-hover: #F3D370;
+            --whatsapp: #2ec96b;
+            --bg-main: #090D16;
+            --bg-surface: #111726;
+            --bg-card: #1A2333;
+            --text-main: #F8FAFC;
+            --text-muted: #94A3B8;
+            --border: #243147;
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.2);
+            --shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.3);
+            --shadow-lg: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+            --header-bg: rgba(9, 13, 22, 0.9);
+            --danger: #F87171;
+            --success: #34D399;
+        }
+
+        /* --- BASE RESET & STRUCTURING (Mobile-First) --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: var(--text-main);
+            background-color: var(--bg-main);
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        body {
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        h1, h2, h3, h4, .logo {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        button, input, select, textarea { font-family: inherit; background: none; border: none; outline: none; }
+
+        .container {
+            width: 100%;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+
+        .section-padding { padding: 60px 0; }
+        .text-center { text-align: center; }
+
+        /* --- TYPOGRAPHIE RESPONSIVE --- */
+        .section-title {
+            font-size: 1.8rem;
+            color: var(--text-main);
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+            line-height: 1.3;
+        }
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 3px;
+            background: var(--accent);
+            margin: 12px auto 0 auto;
+            border-radius: 4px;
+        }
+        
+        .section-subtitle {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 36px;
+            max-width: 100%;
+            line-height: 1.6;
+        }
+
+        /* --- HEADER & NAVIGATION MOBILE-FIRST --- */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: var(--header-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 1000;
+            border-bottom: 1px solid var(--border);
+            padding: 12px 0;
+        }
+
+        .nav-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.1rem;
+            color: var(--text-main);
+            letter-spacing: -0.5px;
+            font-weight: 800;
+            cursor: pointer;
+            text-align: center;
+            width: 100%;
+        }
+        :root[data-theme="light"] .logo { color: var(--primary); }
+        .logo span { color: var(--accent); }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            gap: 8px;
+        }
+
+        .nav-menu { display: none; }
+
+        /* Boutons de contrôle optimisés pour le pouce (min height 44px) */
+        .control-btn {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            height: 44px;
+            padding: 0 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            box-shadow: var(--shadow-sm);
+            flex: 1;
+            min-width: 0;
+        }
+
+        .lang-select-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            flex: 1;
+        }
+
+        .lang-select {
+            cursor: pointer;
+            font-weight: 700;
+            background: transparent;
+            border: none;
+            color: var(--text-main);
+            font-size: 0.85rem;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+        }
+
+        /* Burger Button Mobile-First */
+        .burger-btn {
+            width: 44px;
+            height: 44px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            z-index: 1002;
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            flex-shrink: 0;
+        }
+        .burger-btn span {
+            display: block;
+            width: 20px;
+            height: 2px;
+            background-color: var(--text-main);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+        .burger-btn.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        .burger-btn.active span:nth-child(2) { opacity: 0; }
+        .burger-btn.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+        /* Full-screen Navigation Drawer sur Mobile */
+        .drawer {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            height: 100vh;
+            background-color: var(--bg-surface);
+            z-index: 1001;
+            padding: 140px 24px 40px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            box-shadow: var(--shadow-lg);
+            transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-y: auto;
+        }
+        .drawer.active { right: 0; }
+        .drawer a {
+            color: var(--text-main);
+            font-size: 1.4rem;
+            font-weight: 700;
+            padding: 14px;
+            text-align: center;
+            background: var(--bg-card);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+        .overlay.active { opacity: 1; pointer-events: auto; }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            padding: 160px 0 60px 0;
+            background: linear-gradient(135deg, #0A2540 0%, #051424 100%);
+            color: #FFFFFF;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+        :root[data-theme="dark"] .hero {
+            background: linear-gradient(135deg, #060910 0%, #111726 100%);
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            opacity: 0.04;
+            background-image: linear-gradient(rgba(255,255,255,0.1) 1.5px, transparent 1.5px), linear-gradient(90deg, rgba(255,255,255,0.1) 1.5px, transparent 1.5px);
+            background-size: 30px 30px;
+        }
+        .hero-content { max-width: 100%; position: relative; z-index: 2; }
+        .hero h1 { font-size: 1.9rem; line-height: 1.3; margin-bottom: 16px; font-weight: 800; letter-spacing: -1px; }
+        .hero p { font-size: 0.95rem; color: #94A3B8; margin-bottom: 32px; line-height: 1.6; }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 48px;
+            padding: 14px 28px;
+            font-weight: 700;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            box-shadow: var(--shadow-sm);
+            width: 100%;
+            text-align: center;
+        }
+        .btn-primary { background-color: var(--accent); color: #0A2540; }
+
+        /* --- STATS SECTION --- */
+        .stats-section { background-color: var(--bg-surface); border-bottom: 1px solid var(--border); padding: 40px 0; }
+        .stats-grid { display: grid; grid-template-columns: 1fr; gap: 24px; text-align: center; }
+        .stat-item h3 { font-size: 2.4rem; color: var(--accent); margin-bottom: 4px; font-weight: 800; }
+        .stat-item p { color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
+
+        /* --- SERVICES SECTION --- */
+        .services { background-color: var(--bg-main); }
+        .grid-services { display: grid; grid-template-columns: 1fr; gap: 20px; }
+        .service-card {
+            background: var(--bg-card);
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+        .service-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(212, 175, 55, 0.1);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+            color: var(--accent);
+            font-weight: 700;
+            font-size: 1rem;
+        }
+        .service-card h3 { font-size: 1.2rem; margin-bottom: 10px; color: var(--text-main); }
+        .service-card p { color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; }
+
+        /* --- REALISATIONS --- */
+        .projects { background-color: var(--bg-surface); }
+        .grid-projects { display: grid; grid-template-columns: 1fr; gap: 24px; }
+        .project-card {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+        }
+        .project-img {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+        }
+        .project-info { padding: 20px; }
+        .project-tag {
+            display: inline-block;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: var(--accent);
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+        .project-info h3 { font-size: 1.2rem; color: var(--text-main); margin-bottom: 8px; }
+        .project-info p { color: var(--text-muted); font-size: 0.9rem; line-height: 1.5; }
+
+        /* --- SECTION AVANT / APRÈS PREMIUM --- */
+        .before-after-section { background-color: var(--bg-main); border-top: 1px solid var(--border); }
+        .grid-before-after { display: grid; grid-template-columns: 1fr; gap: 32px; }
+        
+        .ba-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .ba-viewer {
+            position: relative;
+            width: 100%;
+            height: 260px;
+            overflow: hidden;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        
+        .ba-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            pointer-events: none;
+        }
+        
+        .ba-image-before {
+            z-index: 1;
+        }
+        
+        .ba-image-after {
+            z-index: 2;
+            clip-path: inset(0 0 0 50%);
+        }
+        
+        .ba-label {
+            position: absolute;
+            bottom: 12px;
+            padding: 4px 10px;
+            background: rgba(15, 23, 42, 0.75);
+            color: #ffffff;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            border-radius: 4px;
+            letter-spacing: 0.5px;
+            z-index: 3;
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            pointer-events: none;
+        }
+        
+        .ba-label-before { left: 12px; }
+        .ba-label-after { right: 12px; }
+        
+        /* Range Slider de Contrôle Invisible */
+        .ba-slider {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: ew-resize;
+            z-index: 5;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+        }
+        
+        /* Ligne de séparation visuelle (Guidée par JS) */
+        .ba-separator {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 3px;
+            background-color: var(--accent);
+            z-index: 4;
+            pointer-events: none;
+            transform: translateX(-50%);
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+        }
+        
+        .ba-handle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 36px;
+            height: 36px;
+            background-color: var(--primary);
+            border: 3px solid var(--accent);
+            border-radius: 50%;
+            z-index: 4;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-size: 1rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        
+        .ba-info { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; gap: 8px;}
+        .ba-info h3 { font-size: 1.25rem; color: var(--text-main); }
+        .ba-info p { color: var(--text-muted); font-size: 0.9rem; line-height: 1.5; }
+
+        /* --- PARTENAIRES SECTION --- */
+        .partners-section { background-color: var(--bg-main); border-top: 1px solid var(--border); }
+        .grid-partners { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+        .partner-logo-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: var(--shadow-sm);
+            min-height: 110px;
+            text-align: center;
+        }
+        .partner-logo-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow);
+            border-color: var(--accent);
+        }
+        .partner-logo-card img {
+            max-width: 100%;
+            max-height: 50px;
+            object-fit: contain;
+            filter: grayscale(100%);
+            opacity: 0.7;
+            transition: all 0.3s ease;
+        }
+        [data-theme="dark"] .partner-logo-card img { filter: grayscale(100%) brightness(1.5); }
+        .partner-logo-card:hover img { filter: grayscale(0%); opacity: 1; }
+        .partner-logo-card h4 {
+            font-size: 0.85rem;
+            margin-top: 10px;
+            color: var(--text-main);
+            font-weight: 600;
+        }
+
+        /* --- DETAILED MODAL PARTNER --- */
+        .detail-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(6px);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .detail-modal.active { opacity: 1; pointer-events: auto; }
+        .detail-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 28px;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 480px;
+            box-shadow: var(--shadow-lg);
+            text-align: center;
+            position: relative;
+        }
+        .detail-card .close-modal-btn {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+        .detail-card img {
+            max-width: 140px;
+            max-height: 70px;
+            object-fit: contain;
+            margin-bottom: 20px;
+        }
+        .detail-card h3 { font-size: 1.4rem; color: var(--text-main); margin-bottom: 12px; }
+        .detail-card p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; margin-bottom: 20px; }
+
+        /* --- TESTIMONIALS SECTION --- */
+        .testimonials { background-color: var(--bg-surface); }
+        .testimonials-grid { display: grid; grid-template-columns: 1fr; gap: 24px; }
+        .testimonial-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+        }
+        .testimonial-text { color: var(--text-main); font-style: italic; margin-bottom: 16px; line-height: 1.6; font-size: 0.95rem; }
+        .testimonial-author { font-weight: 700; color: var(--text-main); font-size: 0.95rem; }
+        .testimonial-role { color: var(--accent); font-size: 0.8rem; margin-top: 2px; font-weight: 600; }
+
+        /* --- FORMULAIRE DE DEVIS & VISITE --- */
+        .devis-section, .visite-section { background-color: var(--bg-surface); border-top: 1px solid var(--border); }
+        .form-container {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 24px 16px;
+            border-radius: 16px;
+            width: 100%;
+            box-shadow: var(--shadow-lg);
+        }
+        .form-group { margin-bottom: 20px; }
+        .form-group label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text-main);
+            text-transform: uppercase;
+        }
+        .form-control {
+            width: 100%;
+            min-height: 48px;
+            padding: 12px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-main);
+            font-size: 0.95rem;
+        }
+        textarea.form-control { resize: none; height: 120px; }
+        
+        .error-msg {
+            color: var(--danger);
+            font-size: 0.75rem;
+            margin-top: 6px;
+            display: none;
+            font-weight: 600;
+        }
+        .form-control.invalid { border-color: var(--danger); }
+
+        .btn-submit {
+            width: 100%;
+            background-color: #0A2540;
+            color: #FFFFFF;
+            font-size: 0.95rem;
+            border-radius: 8px;
+            min-height: 50px;
+            padding: 14px;
+            font-weight: 700;
+        }
+        :root[data-theme="dark"] .btn-submit { background-color: var(--accent); color: #0A2540; }
+
+        /* --- POPUP LOGIN MODAL --- */
+        .login-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(8px);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .login-modal.active { opacity: 1; pointer-events: auto; }
+        .login-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 24px;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 100%;
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* --- PANNEAU ADMIN MOBILE-FIRST --- */
+        .admin-panel {
+            display: none;
+            padding-top: 140px;
+            background-color: var(--bg-surface);
+            min-height: 100vh;
+        }
+        .admin-container {
+            padding: 0 16px 60px 16px;
+        }
+        .admin-header {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 16px;
+            margin-bottom: 24px;
+        }
+        .admin-header-actions {
+            display: flex;
+            gap: 8px;
+            width: 100%;
+        }
+        .admin-header-actions .btn {
+            flex: 1;
+        }
+        .admin-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px 16px;
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 24px;
+        }
+        .admin-card h3 {
+            font-size: 1.15rem;
+            margin-bottom: 16px;
+            color: var(--text-main);
+            border-left: 4px solid var(--accent);
+            padding-left: 8px;
+        }
+        .admin-grid-2 {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+        }
+        .cms-item-row {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            align-items: flex-start;
+            padding: 14px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-bottom: 12px;
+            width: 100%;
+        }
+        .cms-item-row-actions {
+            display: flex;
+            gap: 8px;
+            width: 100%;
+        }
+        .cms-item-row .btn-danger, .cms-item-row .btn-warning {
+            flex: 1;
+            text-align: center;
+        }
+        
+        .btn-danger { background-color: var(--danger); color: white; min-height: 40px; padding: 10px; border-radius: 6px; font-weight: 600; cursor: pointer;}
+        .btn-warning { background-color: #F59E0B; color: white; min-height: 40px; padding: 10px; border-radius: 6px; font-weight: 600; cursor: pointer;}
+        .btn-success { background-color: var(--success); color: white; min-height: 44px; padding: 12px; border-radius: 8px; font-weight: 700; cursor: pointer; width: 100%; }
+        .btn-secondary { background-color: var(--text-muted); color: white; min-height: 40px; padding: 10px; border-radius: 8px; font-weight: 600; cursor: pointer;}
+        
+        .file-upload-zone {
+            border: 2px dashed var(--border);
+            padding: 20px 12px;
+            text-align: center;
+            border-radius: 8px;
+            background: var(--bg-surface);
+            cursor: pointer;
+            margin-bottom: 12px;
+            font-size: 0.85rem;
+        }
+        .img-preview {
+            width: 100%;
+            max-height: 160px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-top: 12px;
+            display: none;
+        }
+        .img-preview-partner {
+            height: 50px;
+            object-fit: contain;
+            margin-top: 12px;
+            display: none;
+        }
+
+        /* --- CONTACT & CARTE --- */
+        .contact-map-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+            margin-top: 32px;
+        }
+        .map-wrapper {
+            width: 100%;
+            height: 240px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+        .map-wrapper iframe { width: 100%; height: 100%; border: none; }
+
+        /* --- FOOTER --- */
+        footer {
+            background-color: #060E1A;
+            color: #94A3B8;
+            padding: 60px 0 30px 0;
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255,255,255,0.03);
+        }
+        :root[data-theme="dark"] footer { background-color: #05080F; }
+        .footer-grid { display: grid; grid-template-columns: 1fr; gap: 32px; margin-bottom: 36px; }
+        .footer-brand h3 { color: #FFFFFF; margin-bottom: 12px; font-size: 1.25rem; }
+        .footer-brand p { line-height: 1.5; }
+        .footer-contact h4 { color: #FFFFFF; margin-bottom: 16px; font-weight: 700; font-size: 1rem; }
+        .contact-item { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 14px; line-height: 1.4; }
+        .copyright { text-align: center; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.05); font-size: 0.8rem; }
+
+        /* --- BOUTON FLOTTANT WHATSAPP --- */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 54px;
+            height: 54px;
+            background-color: var(--whatsapp);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 24px rgba(37, 211, 102, 0.3);
+            z-index: 999;
+        }
+        .whatsapp-float svg { width: 26px; height: 26px; fill: currentColor; }
+
+        /* ==========================================
+           BREAKPOINTS RESPONSIVES (TABLETTES & PC)
+           ========================================== */
+        @media (min-width: 768px) {
+            .section-padding { padding: 100px 0; }
+            .section-title { font-size: 2.5rem; }
+            .section-subtitle { font-size: 1.1rem; margin-bottom: 50px; }
+            
+            header { padding: 0; height: 85px; }
+            .nav-container { flex-direction: row; justify-content: space-between; height: 100%; gap: 0; }
+            .logo { text-align: left; width: auto; font-size: 1.15rem; }
+            .nav-actions { width: auto; gap: 12px; }
+            .control-btn { flex: none; width: auto; padding: 10px 14px; }
+            .lang-select-wrapper { flex: none; width: auto; }
+            .lang-select { width: auto; }
+            
+            .hero { padding: 200px 0 120px 0; text-align: left; }
+            .hero h1 { font-size: 3.5rem; line-height: 1.25; }
+            .hero p { font-size: 1.15rem; }
+            .btn { width: auto; }
+
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .grid-services { grid-template-columns: repeat(2, 1fr); }
+            .grid-projects { grid-template-columns: repeat(2, 1fr); }
+            .grid-before-after { grid-template-columns: repeat(2, 1fr); }
+            .ba-viewer { height: 320px; }
+            .grid-partners { grid-template-columns: repeat(4, 1fr); gap: 20px; }
+            .testimonials-grid { grid-template-columns: repeat(2, 1fr); }
+            .contact-map-container { grid-template-columns: 1fr 1fr; }
+            .map-wrapper { height: 100%; min-height: 320px; }
+            
+            .admin-panel { padding-top: 120px; }
+            .admin-header { flex-direction: row; justify-content: space-between; align-items: center; }
+            .admin-header-actions { width: auto; }
+            .admin-grid-2 { grid-template-columns: 1fr 1fr; }
+            .cms-item-row { flex-direction: row; justify-content: space-between; align-items: center; }
+            .cms-item-row-actions { width: auto; }
+            .cms-item-row .btn-danger, .cms-item-row .btn-warning { width: auto; flex: none; }
+            .btn-success { width: auto; }
+        }
+
+        @media (min-width: 1024px) {
+            .container { max-width: 1200px; padding: 0 24px; }
+            .burger-btn, .drawer, .overlay { display: none; }
+            .nav-menu { display: flex; gap: 32px; align-items: center; margin-right: 16px; }
+            .nav-menu a { color: var(--text-main); font-weight: 600; font-size: 0.95rem; position: relative; padding: 6px 0; }
+            :root[data-theme="light"] .nav-menu a { color: #0A2540; }
+            .nav-menu a:hover { color: var(--accent); }
+            .nav-menu a::after {
+                content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background-color: var(--accent); transition: width 0.3s ease;
+            }
+            .nav-menu a:hover::after { width: 100%; }
+            .grid-services { grid-template-columns: repeat(3, 1fr); }
+            .footer-grid { grid-template-columns: 2fr 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="overlay" id="overlay"></div>
+    
+    <nav class="drawer" id="drawer">
+        <a href="#home" class="drawer-link" data-i18n="nav-home">Accueil</a>
+        <a href="#services" class="drawer-link" data-i18n="nav-services">Services</a>
+        <a href="#projects" class="drawer-link" data-i18n="nav-projects">Réalisations</a>
+        <a href="#before-after" class="drawer-link" data-i18n="nav-ba">Avant / Après</a>
+        <a href="#partners" class="drawer-link" data-i18n="nav-partners">Partenaires</a>
+        <a href="#visite" class="drawer-link" data-i18n="nav-visite">Visite Terrain</a>
+        <a href="#devis" class="drawer-link" data-i18n="nav-devis">Devis</a>
+        <a href="#contact" class="drawer-link" data-i18n="nav-contact">Contact</a>
+    </nav>
+
+    <header id="mainHeader">
+        <div class="container nav-container">
+            <a onclick="routeTo('public')" class="logo" id="headerCompanyName">UNIVERS<span>CONSTRUCTION</span></a>
+            
+            <div class="nav-menu">
+                <a href="#home" data-i18n="nav-home">Accueil</a>
+                <a href="#services" data-i18n="nav-services">Services</a>
+                <a href="#projects" data-i18n="nav-projects">Réalisations</a>
+                <a href="#before-after" data-i18n="nav-ba">Avant / Après</a>
+                <a href="#partners" data-i18n="nav-partners">Partenaires</a>
+                <a href="#visite" data-i18n="nav-visite">Visite Terrain</a>
+                <a href="#devis" data-i18n="nav-devis">Devis</a>
+                <a href="#contact" data-i18n="nav-contact">Contact</a>
+            </div>
+
+            <div class="nav-actions">
+                <button class="control-btn" id="adminToggleBtn" onclick="handleAdminAuthRequest()">
+                    ⚙️ <span id="adminBtnText">Admin</span>
+                </button>
+                <button class="control-btn" id="themeToggle" aria-label="Changer le thème">
+                    <span id="themeIcon">🌙</span>
+                </button>
+                
+                <div class="control-btn lang-select-wrapper">
+                    🌐
+                    <select id="langSelect" class="lang-select" aria-label="Sélectionner la langue">
+                        <option value="fr">FR</option>
+                        <option value="en">EN</option>
+                        <option value="ln">LN</option>
+                    </select>
+                </div>
+
+                <button class="burger-btn" id="burgerBtn" aria-label="Ouvrir le menu">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="login-modal" id="loginModal">
+        <div class="login-card">
+            <h3 style="margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">🔐 Connexion Admin</h3>
+            <div class="form-group">
+                <label>Identifiant</label>
+                <input type="text" id="authUsername" class="form-control" placeholder="admin">
+            </div>
+            <div class="form-group">
+                <label>Mot de passe</label>
+                <input type="password" id="authPassword" class="form-control" placeholder="••••••••">
+            </div>
+            <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 12px;">
+                <button class="btn-secondary" style="padding: 10px 16px; border-radius: 6px;" onclick="closeLoginModal()">Annuler</button>
+                <button class="btn-success" style="padding: 10px 20px; border-radius: 6px; width: auto;" onclick="processAdminLogin()">Connexion</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="detail-modal" id="partnerDetailModal">
+        <div class="detail-card">
+            <span class="close-modal-btn" onclick="closePartnerDetailModal()">✕</span>
+            <img id="modalPartnerLogo" src="" alt="Logo Partenaire">
+            <h3 id="modalPartnerName">Nom du Partenaire</h3>
+            <p id="modalPartnerDesc">Description complète...</p>
+            <div id="modalPartnerLinkContainer"></div>
+        </div>
+    </div>
+
+    <div id="publicContent">
+        <section class="hero" id="home">
+            <div class="container">
+                <div class="hero-content">
+                    <h1 id="heroTitle" data-i18n="hero-title">Bâtir l'Avenir de la RDC avec Excellence</h1>
+                    <p id="heroDesc" data-i18n="hero-desc">Entreprise de construction de référence. Nous concevons et réalisons des infrastructures modernes, durables et haut de gamme adaptées aux ambitions de notre pays.</p>
+                    <a href="#devis" class="btn btn-primary" data-i18n="hero-btn">Demander un devis</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="stats-section">
+            <div class="container stats-grid" id="statsContainer"></div>
+        </section>
+
+        <section class="services section-padding" id="services">
+            <div class="container">
+                <div class="text-center">
+                    <h2 class="section-title" data-i18n="services-title">Nos Domaines d'Expertise</h2>
+                    <p class="section-subtitle" data-i18n="services-sub">Un savoir-faire complet pour mener à bien vos projets d'envergure en toute sérénité.</p>
+                </div>
+                <div class="grid-services" id="dynamicServicesContainer"></div>
+            </div>
+        </section>
+
+        <section class="projects section-padding" id="projects">
+            <div class="container">
+                <div class="text-center">
+                    <h2 class="section-title" data-i18n="projects-title">Nos Réalisations</h2>
+                    <p class="section-subtitle" data-i18n="projects-sub">Découvrez un aperçu des chantiers d'envergure menés à bien avec rigueur en RDC.</p>
+                </div>
+                <div class="grid-projects" id="dynamicProjectsContainer"></div>
+            </div>
+        </section>
+
+        <section class="before-after-section section-padding" id="before-after">
+            <div class="container">
+                <div class="text-center">
+                    <h2 class="section-title" data-i18n="ba-title">Métamorphoses & Rénovations</h2>
+                    <p class="section-subtitle" data-i18n="ba-sub">Glissez le curseur central pour apprécier la rigueur de nos interventions et l'impact de nos réhabilitations structurelles.</p>
+                </div>
+                <div class="grid-before-after" id="dynamicBeforeAfterContainer"></div>
+            </div>
+        </section>
+
+        <section class="partners-section section-padding" id="partners">
+            <div class="container">
+                <div class="text-center">
+                    <h2 class="section-title" data-i18n="partners-title">Nos Partenaires</h2>
+                    <p class="section-subtitle" data-i18n="partners-sub">Ils soutiennent notre vision et collaborent activement à l'érection d'infrastructures de premier plan.</p>
+                </div>
+                <div class="grid-partners" id="dynamicPartnersContainer"></div>
+            </div>
+        </section>
+
+        <section class="testimonials section-padding">
+            <div class="container">
+                <div class="text-center">
+                    <h2 class="section-title" data-i18n="reviews-title">Confiance & Témoignages</h2>
+                    <p class="section-subtitle" data-i18n="reviews-sub">Ce que disent nos partenaires et clients institutionnels de notre rigueur sur le terrain.</p>
+                </div>
+                <div class="testimonials-grid" id="dynamicTestimonialsContainer"></div>
+            </div>
+        </section>
+
+        <section class="visite-section section-padding" id="visite">
+            <div class="container">
+                <div class="text-center">
+                    <h2 class="section-title" data-i18n="visite-title">Planifier une Visite de Chantier</h2>
+                    <p class="section-subtitle" data-i18n="visite-sub">Demandez l'intervention sur site de nos ingénieurs pour analyser la topographie, la faisabilité ou l'avancement de vos projets.</p>
+                </div>
+
+                <div class="form-container">
+                    <form id="visiteChantierForm" novalidate>
+                        <div class="form-group">
+                            <label for="visiteName">Nom complet</label>
+                            <input type="text" id="visiteName" class="form-control" placeholder="Ex: Dieudonné Mwamba" required>
+                            <div class="error-msg" id="visiteNameError">Ce champ est requis (minimum 3 caractères).</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="visitePhone">Téléphone</label>
+                            <input type="tel" id="visitePhone" class="form-control" placeholder="Ex: 0820000000" required>
+                            <div class="error-msg" id="visitePhoneError">Veuillez entrer un numéro de téléphone valide.</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="visiteAddress">Adresse exacte du chantier</label>
+                            <input type="text" id="visiteAddress" class="form-control" placeholder="Ex: Croisement de l'Équateur, Gombe, Kinshasa" required>
+                            <div class="error-msg" id="visiteAddressError">Veuillez spécifier l'adresse ou la localisation du terrain.</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="visiteProjectType">Type de projet</label>
+                            <select id="visiteProjectType" class="form-control" required>
+                                <option value="" disabled selected>Sélectionnez une catégorie de construction</option>
+                            </select>
+                            <div class="error-msg" id="visiteProjectError">Veuillez choisir un type de projet.</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="visiteDate">Date souhaitée de la visite</label>
+                            <input type="date" id="visiteDate" class="form-control" required>
+                            <div class="error-msg" id="visiteDateError">Veuillez choisir une date valide.</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="visiteDescription">Description précise du besoin terrain</label>
+                            <textarea id="visiteDescription" class="form-control" placeholder="Ex: Étude de sol pour projet R+3, relevé topographique ou inspection d'une fissure de structure..." required></textarea>
+                            <div class="error-msg" id="visiteDescError">Veuillez détailler les objectifs de la visite (min. 10 caractères).</div>
+                        </div>
+
+                        <button type="submit" class="btn btn-submit" style="background-color: var(--whatsapp); color: white;">Demander une visite</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <section class="devis-section section-padding" id="devis">
+            <div class="container">
+                <div class="text-center">
+                    <h2 class="section-title" data-i18n="devis-title">Votre Projet Commence Ici</h2>
+                    <p class="section-subtitle" data-i18n="devis-sub">Complétez le formulaire ci-dessous. Les informations seront structurées et envoyées directement à nos ingénieurs par WhatsApp.</p>
+                </div>
+
+                <div class="form-container">
+                    <form id="whatsappForm" novalidate>
+                        <div class="form-group">
+                            <label for="name" data-i18n="form-name">Votre Nom Complet</label>
+                            <input type="text" id="name" class="form-control" placeholder="Ex: Jean Mukendi" required>
+                            <div class="error-msg" id="nameError">Ce champ est obligatoire (minimum 3 caractères).</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phone" data-i18n="form-phone">Numéro de Téléphone</label>
+                            <input type="tel" id="phone" class="form-control" placeholder="Ex: 0812345678" required>
+                            <div class="error-msg" id="phoneError">Veuillez entrer un numéro de téléphone valide.</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="projectType" data-i18n="form-type">Type de Projet</label>
+                            <select id="projectType" class="form-control" required>
+                                <option value="" disabled selected data-i18n="form-select">Sélectionnez un service</option>
+                            </select>
+                            <div class="error-msg" id="projectTypeError">Veuillez choisir un type de projet.</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="message" data-i18n="form-msg">Description abrégée du projet</label>
+                            <textarea id="message" class="form-control" placeholder="Ex: Construction d'une villa R+1 à Gombe..." required></textarea>
+                            <div class="error-msg" id="messageError">Veuillez décrire brièvement vos besoins (min. 10 caractères).</div>
+                        </div>
+
+                        <button type="submit" class="btn btn-submit" data-i18n="form-btn">Envoyer la demande via WhatsApp</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <footer id="contact">
+            <div class="container">
+                <div class="footer-grid">
+                    <div class="footer-brand">
+                        <h3 id="footerCompanyName">UNIVERS CONSTRUCTION</h3>
+                        <p data-i18n="footer-desc">L'excellence constructive au cœur du développement de la République Démocratique du Congo. Partenaire de confiance des particuliers et des institutions.</p>
+                    </div>
+                    <div class="footer-contact">
+                        <h4 data-i18n="footer-hq">Direction Générale</h4>
+                        <div class="contact-item"><span>📍</span> <div>Boulevard du 30 Juin, Gombe, Kinshasa, RDC</div></div>
+                        <div class="contact-item"><span>✉️</span> <span id="footerEmail"></span></div>
+                        <div class="contact-item"><span>📞</span> <span id="footerPhone"></span></div>
+                    </div>
+                </div>
+
+                <div class="contact-map-container">
+                    <div style="color: #FFFFFF; display: flex; flex-direction: column; justify-content: center;">
+                        <h4 style="margin-bottom: 12px;" data-i18n="map-title">Bureaux Centraux</h4>
+                        <p style="font-weight: 300; line-height: 1.6;" data-i18n="map-desc">Nos ingénieurs vous reçoivent du lundi au vendredi de 8h00 à 16h30 pour l'étude de vos dossiers techniques et propositions financières.</p>
+                    </div>
+                    <div class="map-wrapper">
+                        <iframe src="https://maps.google.com/maps?q=Boulevard%20du%2030%20Juin,%20Gombe,%20Kinshasa&t=&z=13&ie=UTF8&iwloc=&output=embed" allowfullscreen="" loading="lazy"></iframe>
+                    </div>
+                </div>
+
+                <div class="copyright">
+                    <p>© 2026 <span id="copyrightName">Univers Construction</span>. Tous droits réservés. Conçu selon les exigences architecturales internationales.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <main class="admin-panel" id="adminContent">
+        <div class="admin-container">
+            <div class="admin-header">
+                <div>
+                    <h2>🎛️ CMS Univers Construction</h2>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 4px;">Gérez le contenu global et l'infrastructure de données en local</p>
+                </div>
+                <div class="admin-header-actions">
+                    <button class="btn btn-danger" onclick="processAdminLogout()">Déconnexion</button>
+                    <button class="btn btn-secondary" onclick="routeTo('public')">Quitter</button>
+                </div>
+            </div>
+
+            <div class="admin-card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
+                    <h3 style="margin-bottom: 0;">📅 Demandes de Visite de Chantier</h3>
+                    <button class="btn btn-success" style="min-height: 38px; padding: 6px 14px; font-size: 0.85rem;" onclick="exportVisitsToCSV()">📥 Exporter en CSV</button>
+                </div>
+                <div id="adminVisitsList"></div>
+            </div>
+
+            <div class="admin-card">
+                <h3>⚙️ Configuration Générale & Contacts</h3>
+                <form id="adminGeneralForm" class="admin-grid-2">
+                    <div class="form-group">
+                        <label>Nom de l'entreprise</label>
+                        <input type="text" id="cfgCompanyName" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Numéro WhatsApp (Format: 243XXXXXXXXX)</label>
+                        <input type="text" id="cfgWhatsappNumber" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Email de contact</label>
+                        <input type="email" id="cfgEmail" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Téléphone affiché</label>
+                        <input type="text" id="cfgPhoneDisplay" class="form-control">
+                    </div>
+                    <div class="form-group" style="grid-column: 1 / -1;">
+                        <label>Message d'accueil WhatsApp par défaut</label>
+                        <textarea id="cfgDefaultMsg" class="form-control" style="height:80px;"></textarea>
+                    </div>
+                    <div style="grid-column: 1 / -1; display:flex; justify-content:flex-end;">
+                        <button type="button" class="btn btn-success" onclick="saveGeneralConfig()">Enregistrer les modifications</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="admin-card">
+                <h3>🛠️ Gestion des Services de l'Entreprise</h3>
+                <div id="adminServicesList"></div>
+                <hr style="border: 0; border-top:1px solid var(--border); margin:24px 0;">
+                <h4 style="margin-bottom:16px;">Ajouter un nouveau service</h4>
+                <div class="admin-grid-2" id="newServiceForm">
+                    <div class="form-group"><label>Titre (FR)</label><input type="text" id="newServTitleFr" class="form-control"></div>
+                    <div class="form-group"><label>Description (FR)</label><input type="text" id="newServDescFr" class="form-control"></div>
+                    <div class="form-group"><label>Titre (EN)</label><input type="text" id="newServTitleEn" class="form-control"></div>
+                    <div class="form-group"><label>Description (EN)</label><input type="text" id="newServDescEn" class="form-control"></div>
+                    <div class="form-group"><label>Titre (LN)</label><input type="text" id="newServTitleLn" class="form-control"></div>
+                    <div class="form-group"><label>Description (LN)</label><input type="text" id="newServDescLn" class="form-control"></div>
+                    <div style="grid-column: 1 / -1; display:flex; justify-content:flex-end;">
+                        <button type="button" class="btn btn-success" onclick="addCustomService()">Ajouter le service</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="admin-card">
+                <h3>🏗️ Système CMS Réalisations</h3>
+                <div id="adminProjectsList"></div>
+                <hr style="border: 0; border-top:1px solid var(--border); margin:24px 0;">
+                <h4 style="margin-bottom:16px;">Créer une nouvelle réalisation</h4>
+                <div class="admin-grid-2">
+                    <div class="form-group"><label>Catégorie / Tag (Ex: Résidentiel)</label><input type="text" id="newProjTag" class="form-control" placeholder="Gros Œuvre"></div>
+                    <div class="form-group"><label>Nom du projet / Titre</label><input type="text" id="newProjTitle" class="form-control" placeholder="Immeuble Gombe R+4"></div>
+                    
+                    <div class="form-group" style="grid-column: 1 / -1;">
+                        <label>Image de la réalisation (Upload Direct ou URL)</label>
+                        <div class="file-upload-zone" onclick="document.getElementById('projectImageFileInput').click()">
+                            <span>📁 Cliquez pour téléverser une image</span>
+                            <input type="file" id="projectImageFileInput" accept="image/*" style="display:none;" onchange="processImageUpload(this)">
+                            <img id="projectImageUploadPreview" class="img-preview" src="">
+                        </div>
+                        <input type="text" id="newProjImg" class="form-control" placeholder="Alternativement, collez une URL Unsplash...">
+                    </div>
+                    
+                    <div class="form-group" style="grid-column: 1 / -1;"><label>Description explicative</label><textarea id="newProjDesc" class="form-control" style="height:80px;"></textarea></div>
+                    <div style="grid-column: 1 / -1; display:flex; justify-content:flex-end;">
+                        <button type="button" class="btn btn-success" onclick="addCustomProject()">Publier la Réalisation</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="admin-card">
+                <h3>🔄 Module Rénovations & Comparatifs (Avant / Après)</h3>
+                <div id="adminBeforeAfterList"></div>
+                <hr style="border: 0; border-top:1px solid var(--border); margin:24px 0;">
+                <h4 id="baFormTitle" style="margin-bottom:16px;">Ajouter ou modifier un projet comparatif</h4>
+                <input type="hidden" id="editBaId" value="">
+                <div class="admin-grid-2">
+                    <div class="form-group" style="grid-column: 1 / -1;">
+                        <label>Titre du Projet *</label>
+                        <input type="text" id="newBaTitle" class="form-control" placeholder="Ex: Réhabilitation Villa Royale - Ngaliema">
+                    </div>
+                    <div class="form-group">
+                        <label>Photo AVANT * (Depuis la galerie)</label>
+                        <div class="file-upload-zone" onclick="document.getElementById('baBeforeFileInput').click()">
+                            <span>📁 Sélectionner l'état initial</span>
+                            <input type="file" id="baBeforeFileInput" accept="image/*" style="display:none;" onchange="processBaImageUpload(this, 'before')">
+                            <img id="baBeforePreview" class="img-preview" src="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Photo APRÈS * (Depuis la galerie)</label>
+                        <div class="file-upload-zone" onclick="document.getElementById('baAfterFileInput').click()">
+                            <span>📁 Sélectionner l'état final</span>
+                            <input type="file" id="baAfterFileInput" accept="image/*" style="display:none;" onchange="processBaImageUpload(this, 'after')">
+                            <img id="baAfterPreview" class="img-preview" src="">
+                        </div>
+                    </div>
+                    <div class="form-group" style="grid-column: 1 / -1;">
+                        <label>Description des travaux exécutés *</label>
+                        <textarea id="newBaDesc" class="form-control" style="height:80px;" placeholder="Ex: Rénovation lourde de la charpente, étanchéité de la dalle et modernisation de la façade extérieure..."></textarea>
+                    </div>
+                    <div style="grid-column: 1 / -1; display:flex; gap:8px; justify-content:flex-end;">
+                        <button type="button" id="cancelBaEditBtn" class="btn btn-secondary" style="display:none;" onclick="resetBeforeAfterForm()">Annuler</button>
+                        <button type="button" class="btn btn-success" onclick="saveBeforeAfterProject()">Sauvegarder le Projet</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="admin-card">
+                <h3>🤝 Gestion des Partenaires</h3>
+                <div id="adminPartnersList"></div>
+                <hr style="border: 0; border-top:1px solid var(--border); margin:24px 0;">
+                <h4 id="partnerFormTitle" style="margin-bottom:16px;">Ajouter un nouveau partenaire</h4>
+                <input type="hidden" id="editPartnerId" value="">
+                <div class="admin-grid-2">
+                    <div class="form-group">
+                        <label>Nom du Partenaire *</label>
+                        <input type="text" id="newPartnerName" class="form-control" placeholder="Ex: Rawbank">
+                    </div>
+                    <div class="form-group">
+                        <label>Lien Web (Optionnel)</label>
+                        <input type="url" id="newPartnerLink" class="form-control" placeholder="https://...">
+                    </div>
+                    <div class="form-group" style="grid-column: 1 / -1;">
+                        <label>Logo du Partenaire * (Depuis la galerie)</label>
+                        <div class="file-upload-zone" onclick="document.getElementById('partnerFileInput').click()">
+                            <span>📁 Cliquez pour choisir un logo dans votre galerie</span>
+                            <input type="file" id="partnerFileInput" accept="image/*" style="display:none;" onchange="processPartnerImageUpload(this)">
+                            <img id="partnerImageUploadPreview" class="img-preview-partner" src="">
+                        </div>
+                    </div>
+                    <div class="form-group" style="grid-column: 1 / -1;">
+                        <label>Description du Partenaire / Rôle *</label>
+                        <textarea id="newPartnerDesc" class="form-control" style="height:80px;" placeholder="Ex: Partenaire financier stratégique assurant l'accompagnement de nos grands chantiers industriels..."></textarea>
+                    </div>
+                    <div style="grid-column: 1 / -1; display:flex; gap:8px; justify-content:flex-end;">
+                        <button type="button" id="cancelPartnerEditBtn" class="btn btn-secondary" style="display:none;" onclick="resetPartnerForm()">Annuler la modification</button>
+                        <button type="button" id="submitPartnerBtn" class="btn btn-success" onclick="saveCustomPartner()">Enregistrer le partenaire</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="admin-card">
+                <h3>💬 Gestion des Témoignages Clients</h3>
+                <div id="adminTestimonialsList"></div>
+                <hr style="border: 0; border-top:1px solid var(--border); margin:24px 0;">
+                <h4 style="margin-bottom:16px;">Ajouter un nouveau témoignage</h4>
+                <div class="admin-grid-2" id="newTestimonialForm">
+                    <div class="form-group"><label>Nom du client / Partenaire</label><input type="text" id="newTestAuthor" class="form-control" placeholder="M. Olivier Kamitatu"></div>
+                    <div class="form-group"><label>Poste / Entreprise</label><input type="text" id="newTestRole" class="form-control" placeholder="Chef de projet, Indigo RDC"></div>
+                    <div class="form-group" style="grid-column: 1 / -1;"><label>Contenu du témoignage</label><textarea id="newTestQuote" class="form-control" style="height:80px;"></textarea></div>
+                    <div style="grid-column: 1 / -1; display:flex; justify-content:flex-end;">
+                        <button type="button" class="btn btn-success" onclick="addCustomTestimonial()">Ajouter le témoignage</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <a href="#" class="whatsapp-float" id="globalWhatsAppFloat" target="_blank" aria-label="Discuter sur WhatsApp">
+        <svg viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.713-1.457L0 24zm6.59-3.859c1.654.982 3.511 1.5 5.409 1.512 5.517 0 10.005-4.48 10.008-9.997.002-2.673-1.03-5.186-2.909-7.068-1.879-1.881-4.38-2.914-7.056-2.914-5.523 0-10.01 4.481-10.014 9.997-.002 1.8.474 3.559 1.38 5.11l-.971 3.548 3.633-.953zM16.92 14.73c-.27-.135-1.594-.787-1.84-.876-.246-.089-.426-.135-.606.135-.18.27-.696.876-.853 1.057-.157.18-.314.202-.584.067-.27-.135-1.14-.42-2.172-1.34-1.03-.918-1.725-2.053-1.928-2.392-.202-.338-.022-.521.147-.69.153-.152.34-.396.51-.594.17-.198.226-.339.338-.564.113-.225.056-.422-.028-.59-.084-.169-.606-1.46-.83-2.003-.219-.526-.46-.454-.63-.463-.163-.008-.35-.01-.538-.01-.188 0-.495.07-.754.35-.26.28-1.004.98-1.004 2.39 0 1.41 1.026 2.775 1.17 2.965.143.19 2.019 3.084 4.891 4.324.683.295 1.217.471 1.632.603.687.219 1.312.188 1.806.115.55-.083 1.594-.652 1.82-1.282.225-.63.225-1.17.157-1.282-.067-.113-.247-.158-.517-.293z"/></svg>
+    </a>
+
+    <script>
+        // ==========================================
+        // SYSTEM CORE DATA : INITIALISATION & STOCKAGE LOCAL
+        // ==========================================
+        const SECURITY_CREDENTIALS = { user: "admin", pass: "admin123" };
+
+        const DEFAULT_CONFIG = {
+            companyName: "UNIVERS CONSTRUCTION",
+            whatsappNumber: "243820000000",
+            email: "contact@universconstruction-rdc.com",
+            phoneDisplay: "+243 820 000 000",
+            defaultWhatsAppMessage: "Bonjour Univers Construction, je souhaite entrer en contact avec votre bureau d'études pour un projet de construction."
+        };
+
+        const DEFAULT_SERVICES = [
+            { id: "s1", titleFr: "Gros Œuvre", descFr: "Fondations stratégiques, structures béton armé et élévations robustes respectant les normes d'ingénierie internationales.", titleEn: "Structural Works", descEn: "Strategic foundations, reinforced concrete structures, and robust framing compliance.", titleLn: "Mabanga ya Nse mpe Makonzi", descLn: "Kotimola mpe kotia sima ya makasi na nse ya mabele mpo ndako evandela seko." },
+            { id: "s2", titleFr: "Architecture", descFr: "Conception de plans innovants, modélisation 3D avancée et optimisation des espaces pour des bâtiments uniques.", titleEn: "Architecture", descEn: "Innovative space layouts, state-of-the-art 3D modeling, and architectural designs.", titleLn: "Desein mpe Mayele ya Ndako", descLn: "Kosalela bino bapan ya kitoko na ordinatere (3D) mpo na komona ndako." },
+            { id: "s3", titleFr: "Construction Clé en Main", descFr: "Gestion intégrale de chantiers résidentiels, commerciaux et industriels de la pose de la première pierre à la remise des clés.", titleEn: "Turnkey Construction", descEn: "Turnkey management for residential, corporate, and industrial projects.", titleLn: "Kotonga Ndako", descLn: "Kokamba mosala mobimba banda mokolo ya liboso tii mokolo ya kofungola ndako." }
+        ];
+
+        const DEFAULT_PROJECTS = [
+            { id: 1, tag: "Résidentiel Premium", title: "Immeuble Horizon - Kinshasa", desc: "Construction d'un complexe résidentiel moderne de R+6 situé à la Gombe, finitions haut de gamme.", img: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=600&q=80" },
+            { id: 2, tag: "Ouvrage Industriel", title: "Complexe Logistique - Lualaba", desc: "Érection d'une structure industrielle métallique de grande portée optimisée pour la logistique lourde.", img: "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=600&q=80" }
+        ];
+
+        const DEFAULT_BEFORE_AFTER = [
+            {
+                id: "ba1",
+                title: "Rénovation Showroom Bourgeois - Gombe",
+                desc: "Transformation d'un vieil entrepôt désaffecté en une vitrine commerciale haut de gamme avec intégration de verrières industrielles et éclairage LED architectural.",
+                beforeImg: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=600&q=80",
+                afterImg: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80"
+            }
+        ];
+
+        const DEFAULT_PARTNERS = [
+            { id: "p1", name: "Congo Holding", desc: "Principal fournisseur de matériaux de construction et agrégats certifiés sur l'axe Kinshasa-Kongo Central.", link: "https://example.com", logo: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='40' viewBox='0 0 100 40'><rect width='100' height='40' fill='%23ccc'/><text x='50%' y='55%' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='10' fill='%23333'>CONGO HOLDING</text></svg>" },
+            { id: "p2", name: "Beni Engineering", desc: "Bureau de contrôle technique d'infrastructure et d'analyse de résistance des sols.", link: "", logo: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='40' viewBox='0 0 100 40'><rect width='100' height='40' fill='%23ccc'/><text x='50%' y='55%' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='10' fill='%23333'>BENI ENG.</text></svg>" }
+        ];
+
+        const DEFAULT_TESTIMONIALS = [
+            { id: 1, quote: "Univers Construction a fait preuve d'un professionnalisme rare à Kinshasa pour la livraison de notre siège social.", author: "M. Dieudonné Kabasele", role: "Directeur Logistique, Standard Bank RDC" },
+            { quote: "La qualité du gros œuvre sur nos entrepôts dans le Katanga est tout à fait conforme aux standards européens.", author: "Mme Sarah Mwamba", role: "Promotrice Immobilière" }
+        ];
+
+        const STATS_DATABASE = [
+            { target: "150", labelKey: "stat-projets", suffix: "+" },
+            { target: "45", labelKey: "stat-clients", suffix: "+" },
+            { target: "12", labelKey: "stat-ans", suffix: "" },
+            { target: "100", labelKey: "stat-satisfaction", suffix: "%" }
+        ];
+
+        let I18N_DICTIONARY = {
+            fr: {
+                "nav-home": "Accueil", "nav-services": "Services", "nav-projects": "Réalisations", "nav-ba": "Avant / Après", "nav-partners": "Partenaires", "nav-visite": "Visite Terrain", "nav-devis": "Devis", "nav-contact": "Contact",
+                "hero-title": "Bâtir l'Avenir de la RDC avec Excellence", "hero-desc": "Entreprise de construction de référence. Nous concevons et realizons des infrastructures modernes, durables et haut de gamme adaptées aux ambitions de notre pays.", "hero-btn": "Demander un devis",
+                "stat-projets": "Projets Livrés", "stat-clients": "Clients Corporatifs", "stat-ans": "Années d'Expérience", "stat-satisfaction": "Conformité RDC / Int.",
+                "services-title": "Nos Domaines d'Expertise", "services-sub": "Un savoir-faire complet pour mener à bien vos projets d'envergure en toute sérénité.",
+                "projects-title": "Nos Réalisations", "projects-sub": "Découvrez un aperçu des chantiers d'envergure menés à bien avec rigueur en RDC.",
+                "ba-title": "Métamorphoses & Rénovations", "ba-sub": "Glissez le curseur central pour apprécier la rigueur de nos interventions et l'impact de nos réhabilitations structurelles.",
+                "partners-title": "Nos Partenaires", "partners-sub": "Ils soutiennent notre vision et collaborent activement à l'érection d'infrastructures de premier plan.",
+                "reviews-title": "Confiance & Témoignages", "reviews-sub": "Ce que disent nos partenaires et clients institutionnels de notre rigueur sur le terrain.",
+                "devis-title": "Votre Projet Commence Ici", "devis-sub": "Complétez le formulaire ci-dessous. Les informations seront envoyées directement à nos ingénieurs par WhatsApp.",
+                "visite-title": "Planifier une Visite de Chantier", "visite-sub": "Demandez l'intervention sur site de nos ingénieurs pour analyser la topographie ou la faisabilité de vos projets.",
+                "form-name": "Votre Nom Complet", "form-phone": "Numéro de Téléphone", "form-type": "Type de Projet", "form-select": "Sélectionnez un service", "form-msg": "Description abrégée du projet", "form-btn": "Envoyer la demande via WhatsApp",
+                "footer-desc": "L'excellence constructive au cœur du développement de la République Démocratique du Congo.", "footer-hq": "Direction Générale",
+                "map-title": "Bureaux Centraux", "map-desc": "Nos ingénieurs vous reçoivent du lundi au vendredi de 8h00 à 16h30."
+            },
+            en: {
+                "nav-home": "Home", "nav-services": "Services", "nav-projects": "Projects", "nav-ba": "Before / After", "nav-partners": "Partners", "nav-visite": "Site Visit", "nav-devis": "Quote", "nav-contact": "Contact",
+                "hero-title": "Building the Future of DRC with Excellence", "hero-desc": "Leading construction firm. We design and build premium, sustainable, modern infrastructures tailored to our country's ambitions.", "hero-btn": "Request a Quote",
+                "stat-projets": "Projects Delivered", "stat-clients": "Corporate Clients", "stat-ans": "Years of Experience", "stat-satisfaction": "DRC / Int. Compliance",
+                "services-title": "Our Areas of Expertise", "services-sub": "Comprehensive expertise to successfully deliver your large-scale projects.",
+                "projects-title": "Our Legacy Projects", "projects-sub": "Review our premium operations successfully engineered across the DRC.",
+                "ba-title": "Metamorphosis & Renovations", "ba-sub": "Drag the center slider to appreciate the structural impact of our rehabilitation masterworks.",
+                "partners-title": "Our Partners", "partners-sub": "They support our mission and actively collaborate to establish prime infrastructures.",
+                "reviews-title": "Trust & Partnership", "reviews-sub": "Corporate reviews testifying to our extreme structural exactness.",
+                "devis-title": "Initiate Your Venture", "devis-sub": "Complete our procurement log. Parameters will be routed directly to our engineering desks.",
+                "visite-title": "Schedule a Site Visit", "visite-sub": "Request ground engineer deployment to audit layout, feasibility or framework metrics.",
+                "form-name": "Full Legal Name", "form-phone": "Mobile Contact Line", "form-type": "Structural Target", "form-select": "Select our service division", "form-msg": "Abstract of project objectives", "form-btn": "Dispatch Request to WhatsApp",
+                "footer-desc": "Constructive dominance anchoring the economic growth of the Democratic Republic of Congo.", "footer-hq": "Corporate HQ Office",
+                "map-title": "Central Desks", "map-desc": "Our engineering staff accepts technical files Monday through Friday, 8 AM to 4:30 PM."
+            },
+            ln: {
+                "nav-home": "Ebandeli", "nav-services": "Misala", "nav-projects": "Biloko Totongi", "nav-ba": "Liboso / Sima", "nav-partners": "Baninga", "nav-visite": "Tala Esika ya Mosala", "nav-devis": "Talo ya Mosala", "nav-contact": "Sololo na Biso",
+                "hero-title": "Kotonga Congo ya Lobi na Tongo ya Kitoko", "hero-desc": "Sosiete ya liboso na makambo ya BTP. Tokosalela bino bandako ya sika, ya makasi mpe ya ndenge ya likolo.", "hero-btn": "Senga Talo ya Mosala",
+                "stat-projets": "Misala Isili", "stat-clients": "Bakompanyi Andimi", "stat-ans": "Mibu ya Mayele", "stat-satisfaction": "Mibeko ya Mboka na Mikili",
+                "services-title": "Mayele na Biso ya Mosala", "services-sub": "Boyebi mobimba mpo na kosilisa misala minene na bino na kimia mpe na bosembo.",
+                "projects-title": "Biloko Isili Kotongama", "projects-sub": "Tala mwa ndambo ya misala minene oyo tosilisi kotonga na bosembo mobimba awa na RDC.",
+                "ba-title": "Kobongisa Ndako (Liboso / Sima)", "ba-sub": "Benda eloko ya katikati mpo na komona ndenge ndako ebongwama kitoko na maboko na biso.",
+                "partners-title": "Baninga na Biso", "partners-sub": "Basalaka elongo na biso mpo na kotonga biloko ya makasi mpe ya kitoko.",
+                "reviews-title": "Maloba ya Bakiliya Biso", "reviews-sub": "Makomi oyo bakompanyi mpe baninga basili kosala na biso bapanzi mpo na bosembo na biso.",
+                "devis-title": "Banda Mosala na Biso Lelo", "devis-sub": "Tondisa nkasa oyo na nse. Ba sango na yo ekokenda mbala moko epai ya ba ingénieurs na WhatsApp.",
+                "visite-title": "Senga bameka Mabele ya Ndako", "visite-sub": "Senga ba ingénieurs baya kotala esika olingi kotonga ndako mpo na boyebi mobimba ya mabele.",
+                "form-name": "Kombo na Yo Mobimba", "form-phone": "Nimero ya Telefoni", "form-type": "Lolenge ya Mosala", "form-select": "Pona mosala olingi", "form-msg": "Mwa bofitololi ya mosala", "form-btn": "Tinda Likambo oyo na WhatsApp",
+                "footer-desc": "Mayele ya kotonga mpo na botomboli mboka République Démocratique du Congo.", "footer-hq": "Biro ya Mokambi Monene",
+                "map-title": "Bisika Togwambana", "map-desc": "Ba ingénieurs na biso bazali kozwa bino mokolo ya yambo tii ya mitano, banda 8h00 tii 16h30."
+            }
+        };
+
+        // Hydratation initiale LocalStorage si vide
+        if(!localStorage.getItem("uc_config")) localStorage.setItem("uc_config", JSON.stringify(DEFAULT_CONFIG));
+        if(!localStorage.getItem("uc_services")) localStorage.setItem("uc_services", JSON.stringify(DEFAULT_SERVICES));
+        if(!localStorage.getItem("uc_projects")) localStorage.setItem("uc_projects", JSON.stringify(DEFAULT_PROJECTS));
+        if(!localStorage.getItem("uc_before_after")) localStorage.setItem("uc_before_after", JSON.stringify(DEFAULT_BEFORE_AFTER));
+        if(!localStorage.getItem("uc_partners")) localStorage.setItem("uc_partners", JSON.stringify(DEFAULT_PARTNERS));
+        if(!localStorage.getItem("uc_testimonials")) localStorage.setItem("uc_testimonials", JSON.stringify(DEFAULT_TESTIMONIALS));
+        if(!localStorage.getItem("uc_site_visits")) localStorage.setItem("uc_site_visits", JSON.stringify([]));
+
+        let currentAppState = "public"; 
+        let globalUploadedBase64 = "";
+        let globalPartnerUploadedBase64 = "";
+        let globalBaBeforeBase64 = "";
+        let globalBaAfterBase64 = "";
+
+        // ==========================================
+        // RUN ENGINE INITIALIZATION
+        // ==========================================
+        document.addEventListener("DOMContentLoaded", () => {
+            renderAppContent();
+            initThemeEngine();
+            initI18nEngine();
+            initNavigationDrawer();
+            initValidationFormEngine();
+            initVisiteChantierEngine();
+            setupSmoothScroll();
+            checkSessionState();
+        });
+
+        function checkSessionState() {
+            if(localStorage.getItem("uc_admin_session") === "active") {
+                document.getElementById("adminBtnText").textContent = "Dashboard";
+            }
+        }
+
+        // ==========================================
+        // DYNAMIC CORE RENDERING LAYER
+        // ==========================================
+        function renderAppContent() {
+            const config = JSON.parse(localStorage.getItem("uc_config"));
+            const services = JSON.parse(localStorage.getItem("uc_services"));
+            const projects = JSON.parse(localStorage.getItem("uc_projects"));
+            const beforeAfterList = JSON.parse(localStorage.getItem("uc_before_after")) || [];
+            const partners = JSON.parse(localStorage.getItem("uc_partners")) || [];
+            const testimonials = JSON.parse(localStorage.getItem("uc_testimonials"));
+            const currentLang = localStorage.getItem("uc-lang") || "fr";
+
+            // Mise à jour de la configuration de l'interface publique
+            document.getElementById("headerCompanyName").innerHTML = `${config.companyName.split(' ')[0]}<span> ${config.companyName.split(' ').slice(1).join(' ')}</span>`;
+            document.getElementById("footerCompanyName").textContent = config.companyName;
+            document.getElementById("copyrightName").textContent = config.companyName;
+            document.getElementById("footerEmail").textContent = config.email;
+            document.getElementById("footerPhone").textContent = config.phoneDisplay;
+            document.getElementById("globalWhatsAppFloat").href = `https://wa.me/${config.whatsappNumber}?text=${encodeURIComponent(config.defaultWhatsAppMessage)}`;
+
+            // Statistiques de l'entreprise
+            const statsContainer = document.getElementById("statsContainer");
+            statsContainer.innerHTML = STATS_DATABASE.map(stat => `
+                <div class="stat-item">
+                    <h3>${stat.target}${stat.suffix}</h3>
+                    <p data-i18n="${stat.labelKey}">${I18N_DICTIONARY[currentLang][stat.labelKey] || ''}</p>
+                </div>
+            `).join('');
+
+            // Moteur de rendu des services publics
+            const servicesContainer = document.getElementById("dynamicServicesContainer");
+            const selectProject = document.getElementById("projectType");
+            const selectVisiteProject = document.getElementById("visiteProjectType");
+            
+            servicesContainer.innerHTML = services.map((s, index) => {
+                const title = currentLang === "en" ? s.titleEn : (currentLang === "ln" ? s.titleLn : s.titleFr);
+                const desc = currentLang === "en" ? s.descEn : (currentLang === "ln" ? s.descLn : s.descFr);
+                return `
+                    <div class="service-card">
+                        <div class="service-icon">${String(index + 1).padStart(2, '0')}</div>
+                        <h3>${title}</h3>
+                        <p>${desc}</p>
+                    </div>
+                `;
+            }).join('');
+
+            // Mise à jour des listes de sélection (Devis & Visite)
+            const optionsHtml = `<option value="" disabled selected data-i18n="form-select">${I18N_DICTIONARY[currentLang]["form-select"]}</option>` + 
+                services.map(s => `<option value="${s.titleFr}">${currentLang === "en" ? s.titleEn : (currentLang === "ln" ? s.titleLn : s.titleFr)}</option>`).join('');
+            
+            selectProject.innerHTML = optionsHtml;
+            selectVisiteProject.innerHTML = `<option value="" disabled selected>Sélectionnez une catégorie</option>` + 
+                services.map(s => `<option value="${s.titleFr}">${currentLang === "en" ? s.titleEn : (currentLang === "ln" ? s.titleLn : s.titleFr)}</option>`).join('');
+
+            // Rendu des réalisations de la galerie publique
+            const projectsContainer = document.getElementById("dynamicProjectsContainer");
+            projectsContainer.innerHTML = projects.map(p => `
+                <div class="project-card">
+                    <div class="project-img" style="background-image: linear-gradient(rgba(10,37,64,0.05), rgba(10,37,64,0.2)), url('${p.img}');"></div>
+                    <div class="project-info">
+                        <span class="project-tag">${p.tag}</span>
+                        <h3>${p.title}</h3>
+                        <p>${p.desc}</p>
+                    </div>
+                </div>
+            `).join('');
+
+            // Moteur de rendu Public du composant interactif Avant / Après (Slider)
+            const baContainer = document.getElementById("dynamicBeforeAfterContainer");
+            if(beforeAfterList.length === 0) {
+                baContainer.innerHTML = `<p style="grid-column: 1/-1; text-align:center; color: var(--text-muted);">Aucune rénovation comparative publiée pour le moment.</p>`;
+            } else {
+                baContainer.innerHTML = beforeAfterList.map(ba => `
+                    <div class="ba-card">
+                        <div class="ba-viewer">
+                            <img src="${ba.beforeImg}" class="ba-image ba-image-before" alt="Avant">
+                            <div class="ba-label ba-label-before">Avant</div>
+                            
+                            <img src="${ba.afterImg}" class="ba-image ba-image-after" alt="Après" id="img-after-${ba.id}">
+                            <div class="ba-label ba-label-after">Après</div>
+                            
+                            <div class="ba-separator" id="sep-${ba.id}"></div>
+                            <div class="ba-handle" id="hand-${ba.id}">↔</div>
+                            
+                            <input type="range" min="0" max="100" value="50" class="ba-slider" oninput="handleBaSliderMovement(this, '${ba.id}')">
+                        </div>
+                        <div class="ba-info">
+                            <h3>${ba.title}</h3>
+                            <p>${ba.desc}</p>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            // Rendu public des Partenaires
+            const partnersContainer = document.getElementById("dynamicPartnersContainer");
+            if (partners.length === 0) {
+                partnersContainer.innerHTML = `<p style="grid-column: 1/-1; text-align:center; color: var(--text-muted);">Aucun partenaire enregistré pour le moment.</p>`;
+            } else {
+                partnersContainer.innerHTML = partners.map(p => `
+                    <div class="partner-logo-card" onclick="openPartnerDetailModal('${p.id}')">
+                        <img src="${p.logo}" alt="${p.name}">
+                        <h4>${p.name}</h4>
+                    </div>
+                `).join('');
+            }
+
+            // Rendu des témoignages clients
+            const testimonialsContainer = document.getElementById("dynamicTestimonialsContainer");
+            testimonialsContainer.innerHTML = testimonials.map(t => `
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"${t.quote}"</p>
+                    <p class="testimonial-author">${t.author}</p>
+                    <p class="testimonial-role">${t.role}</p>
+                </div>
+            `).join('');
+
+            // Liaison des valeurs vers les formulaires administratifs
+            document.getElementById("cfgCompanyName").value = config.companyName;
+            document.getElementById("cfgWhatsappNumber").value = config.whatsappNumber;
+            document.getElementById("cfgEmail").value = config.email;
+            document.getElementById("cfgPhoneDisplay").value = config.phoneDisplay;
+            document.getElementById("cfgDefaultMsg").value = config.defaultWhatsAppMessage;
+
+            renderAdminLists();
+        }
+
+        function handleBaSliderMovement(slider, id) {
+            const value = slider.value;
+            const afterImage = document.getElementById(`img-after-${id}`);
+            const separator = document.getElementById(`sep-${id}`);
+            const handle = document.getElementById(`hand-${id}`);
+            
+            if(afterImage && separator && handle) {
+                afterImage.style.clipPath = `inset(0 0 0 ${value}%)`;
+                separator.style.left = `${value}%`;
+                handle.style.left = `${value}%`;
+            }
+        }
+
+        // ==========================================
+        // SECURITY CONTROL & AUTHENTICATION
+        // ==========================================
+        function handleAdminAuthRequest() {
+            if(localStorage.getItem("uc_admin_session") === "active") {
+                toggleAdminView();
+            } else {
+                document.getElementById("loginModal").classList.add("active");
+            }
+        }
+
+        function closeLoginModal() {
+            document.getElementById("loginModal").classList.remove("active");
+        }
+
+        function processAdminLogin() {
+            const user = document.getElementById("authUsername").value.trim();
+            const pass = document.getElementById("authPassword").value.trim();
+
+            if(user === SECURITY_CREDENTIALS.user && pass === SECURITY_CREDENTIALS.pass) {
+                localStorage.setItem("uc_admin_session", "active");
+                closeLoginModal();
+                routeTo("admin");
+                alert("🔑 Authentification validée. Accès au CMS accordé.");
+            } else {
+                alert("❌ Identifiants incorrects. Accès refusé.");
+            }
+        }
+
+        function processAdminLogout() {
+            localStorage.removeItem("uc_admin_session");
+            routeTo("public");
+            document.getElementById("adminBtnText").textContent = "Admin";
+            alert("🔒 Session administrative fermée avec succès.");
+        }
+
+        function toggleAdminView() {
+            if(currentAppState === "public") {
+                routeTo("admin");
+            } else {
+                routeTo("public");
+            }
+        }
+
+        function routeTo(state) {
+            currentAppState = state;
+            const publicContent = document.getElementById("publicContent");
+            const adminContent = document.getElementById("adminContent");
+            const btnText = document.getElementById("adminBtnText");
+
+            if(state === "admin") {
+                publicContent.style.display = "none";
+                adminContent.style.display = "block";
+                btnText.textContent = "Site Public";
+                window.scrollTo(0, 0);
+            } else {
+                publicContent.style.display = "block";
+                adminContent.style.display = "none";
+                btnText.textContent = localStorage.getItem("uc_admin_session") === "active" ? "Dashboard" : "Admin";
+                renderAppContent();
+            }
+        }
+
+        // ==========================================
+        // MEDIA PROCESSOR LAYER (UPLOAD BASE64)
+        // ==========================================
+        function processImageUpload(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    globalUploadedBase64 = e.target.result;
+                    const preview = document.getElementById("projectImageUploadPreview");
+                    preview.src = e.target.result;
+                    preview.style.display = "block";
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function processPartnerImageUpload(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    globalPartnerUploadedBase64 = e.target.result;
+                    const preview = document.getElementById("partnerImageUploadPreview");
+                    preview.src = e.target.result;
+                    preview.style.display = "block";
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function processBaImageUpload(input, target) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    if(target === 'before') {
+                        globalBaBeforeBase64 = e.target.result;
+                        const preview = document.getElementById("baBeforePreview");
+                        preview.src = e.target.result;
+                        preview.style.display = "block";
+                    } else if (target === 'after') {
+                        globalBaAfterBase64 = e.target.result;
+                        const preview = document.getElementById("baAfterPreview");
+                        preview.src = e.target.result;
+                        preview.style.display = "block";
+                    }
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        // ==========================================
+        // PUBLIC PARTNER INTERACTION MODAL
+        // ==========================================
+        function openPartnerDetailModal(id) {
+            const partners = JSON.parse(localStorage.getItem("uc_partners")) || [];
+            const partner = partners.find(p => p.id === id);
+            if(!partner) return;
+
+            document.getElementById("modalPartnerLogo").src = partner.logo;
+            document.getElementById("modalPartnerName").textContent = partner.name;
+            document.getElementById("modalPartnerDesc").textContent = partner.desc;
+            
+            const linkContainer = document.getElementById("modalPartnerLinkContainer");
+            if(partner.link && partner.link.trim() !== "") {
+                linkContainer.innerHTML = `<a href="${partner.link}" target="_blank" class="btn btn-primary" style="min-height:40px; font-size:0.85rem; padding:10px 20px; width:auto;">Visiter le site web</a>`;
+            } else {
+                linkContainer.innerHTML = "";
+            }
+
+            document.getElementById("partnerDetailModal").classList.add("active");
+        }
+
+        function closePartnerDetailModal() {
+            document.getElementById("partnerDetailModal").classList.remove("active");
+        }
+
+        // ==========================================
+        // MODULE ENGINE : DEMANDE DE VISITE DE CHANTIER
+        // ==========================================
+        function initVisiteChantierEngine() {
+            const form = document.getElementById("visiteChantierForm");
+            if(!form) return;
+
+            form.addEventListener("submit", function(e) {
+                e.preventDefault();
+                let isFormValid = true;
+
+                const fields = [
+                    { id: "visiteName", errId: "visiteNameError", valid: val => val.trim().length >= 3 },
+                    { id: "visitePhone", errId: "visitePhoneError", valid: val => val.trim().length >= 9 },
+                    { id: "visiteAddress", errId: "visiteAddressError", valid: val => val.trim().length >= 5 },
+                    { id: "visiteProjectType", errId: "visiteProjectError", valid: val => val !== "" },
+                    { id: "visiteDate", errId: "visiteDateError", valid: val => val !== "" },
+                    { id: "visiteDescription", errId: "visiteDescError", valid: val => val.trim().length >= 10 }
+                ];
+
+                fields.forEach(field => {
+                    const inputEl = document.getElementById(field.id);
+                    const errorEl = document.getElementById(field.errId);
+                    
+                    if (!field.valid(inputEl.value)) {
+                        errorEl.style.display = "block";
+                        inputEl.classList.add("invalid");
+                        isFormValid = false;
+                    } else {
+                        errorEl.style.display = "none";
+                        inputEl.classList.remove("invalid");
+                    }
+                });
+
+                if (isFormValid) {
+                    const config = JSON.parse(localStorage.getItem("uc_config"));
+                    
+                    const newVisit = {
+                        id: "vst_" + Date.now(),
+                        name: document.getElementById("visiteName").value.trim(),
+                        phone: document.getElementById("visitePhone").value.trim(),
+                        address: document.getElementById("visiteAddress").value.trim(),
+                        projectType: document.getElementById("visiteProjectType").value,
+                        date: document.getElementById("visiteDate").value,
+                        description: document.getElementById("visiteDescription").value.trim(),
+                        timestamp: new Date().toLocaleString("fr-FR")
+                    };
+
+                    // Sauvegarde Locale (Système existant de l'application)
+                    const currentVisits = JSON.parse(localStorage.getItem("uc_site_visits")) || [];
+                    currentVisits.push(newVisit);
+                    localStorage.setItem("uc_site_visits", JSON.stringify(currentVisits));
+
+                    // Génération automatique du message WhatsApp professionnel
+                    const textWhatsApp = 
+                        `*⚠️ DEMANDE DE VISITE DE CHANTIER — ${config.companyName}*\n` +
+                        `----------------------------------------\n` +
+                        `• *Nom du Client* : ${newVisit.name}\n` +
+                        `• *Téléphone* : ${newVisit.phone}\n` +
+                        `• *Adresse Chantier* : ${newVisit.address}\n` +
+                        `• *Type de Projet* : ${newVisit.projectType}\n` +
+                        `• *Date Souhaitée* : ${newVisit.date}\n\n` +
+                        `*Description du Besoin Terrain :*\n${newVisit.description}\n` +
+                        `----------------------------------------\n` +
+                        `_Généré automatiquement depuis le portail technique._`;
+
+                    form.reset();
+                    renderAppContent();
+                    alert("🎯 Votre demande de visite a été enregistrée en base de données. Redirection vers le service de planification technique via WhatsApp...");
+                    
+                    const urlTarget = `https://wa.me/${config.whatsappNumber}?text=${encodeURIComponent(textWhatsApp)}`;
+                    window.open(urlTarget, '_blank');
+                }
+            });
+        }
+
+        function exportVisitsToCSV() {
+            const visits = JSON.parse(localStorage.getItem("uc_site_visits")) || [];
+            if(visits.length === 0) return alert("Aucune demande enregistrée à exporter.");
+
+            let csvContent = "data:text/csv;charset=utf-8,\uFEFF";
+            csvContent += "ID;Date Enregistrement;Nom Complet;Telephone;Adresse Chantier;Type Projet;Date Visite Souhaitee;Description\n";
+
+            visits.forEach(v => {
+                const cleanDesc = v.description.replace(/(\r\n|\n|\r|;)/gm, " ");
+                const cleanAddr = v.address.replace(/;/gm, " ");
+                csvContent += `${v.id};${v.timestamp};${v.name};${v.phone};${cleanAddr};${v.projectType};${v.date};${cleanDesc}\n`;
+            });
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `Demandes_Visites_Chantier_${Date.now()}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // ==========================================
+        // MANAGEMENT ACTIONS ENGINE (ADMIN CRUD CORE)
+        // ==========================================
+        function saveGeneralConfig() {
+            const updatedConfig = {
+                companyName: document.getElementById("cfgCompanyName").value.trim(),
+                whatsappNumber: document.getElementById("cfgWhatsappNumber").value.trim(),
+                email: document.getElementById("cfgEmail").value.trim(),
+                phoneDisplay: document.getElementById("cfgPhoneDisplay").value.trim(),
+                defaultWhatsAppMessage: document.getElementById("cfgDefaultMsg").value.trim()
+            };
+            localStorage.setItem("uc_config", JSON.stringify(updatedConfig));
+            alert("✅ Configuration générale sauvegardée !");
+            renderAppContent();
+        }
+
+        function renderAdminLists() {
+            const services = JSON.parse(localStorage.getItem("uc_services"));
+            const projects = JSON.parse(localStorage.getItem("uc_projects"));
+            const beforeAfterList = JSON.parse(localStorage.getItem("uc_before_after")) || [];
+            const partners = JSON.parse(localStorage.getItem("uc_partners")) || [];
+            const testimonials = JSON.parse(localStorage.getItem("uc_testimonials"));
+            const visits = JSON.parse(localStorage.getItem("uc_site_visits")) || [];
+
+            // Affichage des demandes de visites
+            const visitsContainer = document.getElementById("adminVisitsList");
+            if(visits.length === 0) {
+                visitsContainer.innerHTML = `<p style="text-align:center; padding: 20px; color: var(--text-muted); font-size:0.9rem;">Aucune demande de visite enregistrée.</p>`;
+            } else {
+                visitsContainer.innerHTML = visits.map(v => `
+                    <div class="cms-item-row" style="align-items: stretch; border-left: 4px solid var(--whatsapp);">
+                        <div style="flex-grow: 1; font-size: 0.9rem; line-height: 1.5;">
+                            <div style="display:flex; justify-content:space-between; margin-bottom:4px; flex-wrap:wrap;">
+                                <strong>👤 ${v.name}</strong> 
+                                <span style="font-size:0.75rem; color: var(--text-muted); font-weight:600;">⏱️ Recu le : ${v.timestamp}</span>
+                            </div>
+                            <div>📞 <strong>Tél :</strong> ${v.phone}</div>
+                            <div>📍 <strong>Adresse :</strong> ${v.address}</div>
+                            <div>🏗️ <strong>Projet :</strong> ${v.projectType} | 📅 <strong>Date RDV :</strong> <span style="color:var(--accent); font-weight:700;">${v.date}</span></div>
+                            <div style="background: var(--bg-surface); padding:8px; border-radius:6px; margin-top:6px; font-style:italic; font-size:0.85rem; border:1px solid var(--border);">"${v.description}"</div>
+                        </div>
+                        <div style="display:flex; gap:8px; width:100%; margin-top:8px;">
+                            <a href="https://wa.me/${v.phone.replace(/\s+/g, '')}" target="_blank" class="btn btn-success" style="min-height:36px; padding:6px; font-size:0.8rem; flex:1; background-color: var(--whatsapp);">💬 Contacter</a>
+                            <button class="btn-danger" style="min-height:36px; padding:6px; font-size:0.8rem; flex:1;" onclick="deleteCmsItem('visit', '${v.id}')">Supprimer la fiche</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            // Liste administrative des services
+            document.getElementById("adminServicesList").innerHTML = services.map(s => `
+                <div class="cms-item-row">
+                    <div><strong>${s.titleFr}</strong> <span style="color:var(--text-muted); font-size:0.85rem;">(${s.titleEn} / ${s.titleLn})</span></div>
+                    <button class="btn-danger" onclick="deleteCmsItem('service', '${s.id}')">Supprimer</button>
+                </div>
+            `).join('');
+
+            // Liste administrative des réalisations
+            document.getElementById("adminProjectsList").innerHTML = projects.map(p => `
+                <div class="cms-item-row">
+                    <div style="display:flex; align-items:center; gap:16px; width: 100%; margin-bottom: 8px;">
+                        <img src="${p.img}" style="width:50px; height:40px; object-fit:cover; border-radius:4px; flex-shrink: 0;">
+                        <div><strong>${p.title}</strong> <span style="color:var(--text-muted); font-size:0.85rem;">[${p.tag}]</span></div>
+                    </div>
+                    <button class="btn-danger" onclick="deleteCmsItem('project', '${p.id}')">Supprimer</button>
+                </div>
+            `).join('');
+
+            // Liste administrative du module Avant / Après
+            document.getElementById("adminBeforeAfterList").innerHTML = beforeAfterList.map(ba => `
+                <div class="cms-item-row">
+                    <div style="display:flex; align-items:center; gap:12px; width: 100%; margin-bottom: 8px;">
+                        <div style="display:flex; gap:4px; flex-shrink:0;">
+                            <img src="${ba.beforeImg}" style="width:40px; height:35px; object-fit:cover; border-radius:4px;" title="Avant">
+                            <img src="${ba.afterImg}" style="width:40px; height:35px; object-fit:cover; border-radius:4px;" title="Après">
+                        </div>
+                        <div style="overflow:hidden;">
+                            <strong>${ba.title}</strong>
+                            <div style="color:var(--text-muted); font-size:0.8rem; white-space:nowrap; text-overflow:ellipsis; overflow:hidden;">${ba.desc}</div>
+                        </div>
+                    </div>
+                    <div class="cms-item-row-actions">
+                        <button class="btn-warning" onclick="initEditBeforeAfter('${ba.id}')">Modifier</button>
+                        <button class="btn-danger" onclick="deleteCmsItem('beforeAfter', '${ba.id}')">Supprimer</button>
+                    </div>
+                </div>
+            `).join('');
+
+            // Liste administrative des partenaires
+            document.getElementById("adminPartnersList").innerHTML = partners.map(p => `
+                <div class="cms-item-row">
+                    <div style="display:flex; align-items:center; gap:16px; width: 100%; margin-bottom: 8px;">
+                        <img src="${p.logo}" style="width:50px; height:40px; object-fit:contain; background:#f0f0f0; border-radius:4px; padding:2px; flex-shrink: 0;">
+                        <div>
+                            <strong>${p.name}</strong> 
+                            <div style="color:var(--text-muted); font-size:0.8rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:250px;">${p.desc}</div>
+                        </div>
+                    </div>
+                    <div class="cms-item-row-actions">
+                        <button class="btn-warning" onclick="initEditPartner('${p.id}')">Modifier</button>
+                        <button class="btn-danger" onclick="deleteCmsItem('partner', '${p.id}')">Supprimer</button>
+                    </div>
+                </div>
+            `).join('');
+
+            // Liste administrative des témoignages
+            document.getElementById("adminTestimonialsList").innerHTML = testimonials.map((t, idx) => `
+                <div class="cms-item-row">
+                    <div style="margin-bottom: 8px;"><strong>${t.author}</strong> - <span style="color:var(--text-muted); font-size:0.85rem;">${t.role}</span></div>
+                    <button class="btn-danger" onclick="deleteCmsItem('testimonial', ${idx})">Supprimer</button>
+                </div>
+            `).join('');
+        }
+
+        function addCustomService() {
+            const services = JSON.parse(localStorage.getItem("uc_services"));
+            const newService = {
+                id: "s_" + Date.now(),
+                titleFr: document.getElementById("newServTitleFr").value.trim(),
+                descFr: document.getElementById("newServDescFr").value.trim(),
+                titleEn: document.getElementById("newServTitleEn").value.trim(),
+                descEn: document.getElementById("newServDescEn").value.trim(),
+                titleLn: document.getElementById("newServTitleLn").value.trim(),
+                descLn: document.getElementById("newServDescLn").value.trim()
+            };
+
+            if(!newService.titleFr || !newService.descFr) return alert("Veuillez renseigner le titre et la description en Français.");
+
+            services.push(newService);
+            localStorage.setItem("uc_services", JSON.stringify(services));
+            document.querySelectorAll("#newServiceForm input").forEach(i => i.value = "");
+            renderAppContent();
+            alert("🎯 Nouveau domaine d'expertise configuré !");
+        }
+
+        function addCustomProject() {
+            const projects = JSON.parse(localStorage.getItem("uc_projects"));
+            let finalImgPath = "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=600&q=80";
+
+            if (globalUploadedBase64 !== "") {
+                finalImgPath = globalUploadedBase64;
+            } else if (document.getElementById("newProjImg").value.trim() !== "") {
+                finalImgPath = document.getElementById("newProjImg").value.trim();
+            }
+
+            const newProject = {
+                id: Date.now().toString(),
+                tag: document.getElementById("newProjTag").value.trim() || "Gros Œuvre",
+                title: document.getElementById("newProjTitle").value.trim(),
+                desc: document.getElementById("newProjDesc").value.trim(),
+                img: finalImgPath
+            };
+
+            if(!newProject.title || !newProject.desc) return alert("Le titre et la description sont obligatoires.");
+
+            projects.push(newProject);
+            localStorage.setItem("uc_projects", JSON.stringify(projects));
+
+            document.getElementById("newProjTag").value = "";
+            document.getElementById("newProjTitle").value = "";
+            document.getElementById("newProjDesc").value = "";
+            document.getElementById("newProjImg").value = "";
+            document.getElementById("projectImageUploadPreview").style.display = "none";
+            globalUploadedBase64 = "";
+
+            renderAppContent();
+            alert("🏗️ Réalisation publiée dans la galerie avec succès !");
+        }
+
+        function saveBeforeAfterProject() {
+            const list = JSON.parse(localStorage.getItem("uc_before_after")) || [];
+            const title = document.getElementById("newBaTitle").value.trim();
+            const desc = document.getElementById("newBaDesc").value.trim();
+            const editId = document.getElementById("editBaId").value;
+
+            if(!title || !desc) return alert("Le titre et la description du comparatif sont obligatoires.");
+
+            if(editId === "" && (globalBaBeforeBase64 === "" || globalBaAfterBase64 === "")) {
+                return alert("Veuillez charger obligatoirement une photo Avant ET une photo Après.");
+            }
+
+            if(editId !== "") {
+                const idx = list.findIndex(item => item.id === editId);
+                if(idx !== -1) {
+                    list[idx].title = title;
+                    list[idx].desc = desc;
+                    if(globalBaBeforeBase64 !== "") list[idx].beforeImg = globalBaBeforeBase64;
+                    if(globalBaAfterBase64 !== "") list[idx].afterImg = globalBaAfterBase64;
+                    localStorage.setItem("uc_before_after", JSON.stringify(list));
+                    alert("✅ Projet de rénovation mis à jour !");
+                }
+            } else {
+                const newItem = {
+                    id: "ba_" + Date.now(),
+                    title: title,
+                    desc: desc,
+                    beforeImg: globalBaBeforeBase64,
+                    afterImg: globalBaAfterBase64
+                };
+                list.push(newItem);
+                localStorage.setItem("uc_before_after", JSON.stringify(list));
+                alert("🏗️ Projet Avant/Après publié avec succès !");
+            }
+
+            resetBeforeAfterForm();
+            renderAppContent();
+        }
+
+        function initEditBeforeAfter(id) {
+            const list = JSON.parse(localStorage.getItem("uc_before_after")) || [];
+            const item = list.find(ba => ba.id === id);
+            if(!item) return;
+
+            document.getElementById("editBaId").value = item.id;
+            document.getElementById("newBaTitle").value = item.title;
+            document.getElementById("newBaDesc").value = item.desc;
+            
+            const preBefore = document.getElementById("baBeforePreview");
+            preBefore.src = item.beforeImg;
+            preBefore.style.display = "block";
+
+            const preAfter = document.getElementById("baAfterPreview");
+            preAfter.src = item.afterImg;
+            preAfter.style.display = "block";
+
+            document.getElementById("baFormTitle").textContent = "✏️ Modifier le projet comparatif : " + item.title;
+            document.getElementById("cancelBaEditBtn").style.display = "inline-flex";
+            
+            window.scrollTo({
+                top: document.getElementById("baFormTitle").offsetTop - 140,
+                behavior: 'smooth'
+            });
+        }
+
+        function resetBeforeAfterForm() {
+            document.getElementById("editBaId").value = "";
+            document.getElementById("newBaTitle").value = "";
+            document.getElementById("newBaDesc").value = "";
+            document.getElementById("baBeforeFileInput").value = "";
+            document.getElementById("baAfterFileInput").value = "";
+            document.getElementById("baBeforePreview").style.display = "none";
+            document.getElementById("baAfterPreview").style.display = "none";
+            globalBaBeforeBase64 = "";
+            globalBaAfterBase64 = "";
+            
+            document.getElementById("baFormTitle").textContent = "Ajouter ou modifier un projet comparatif";
+            document.getElementById("cancelBaEditBtn").style.display = "none";
+        }
+
+        function saveCustomPartner() {
+            const partners = JSON.parse(localStorage.getItem("uc_partners")) || [];
+            const name = document.getElementById("newPartnerName").value.trim();
+            const desc = document.getElementById("newPartnerDesc").value.trim();
+            const link = document.getElementById("newPartnerLink").value.trim();
+            const editId = document.getElementById("editPartnerId").value;
+
+            if(!name || !desc) return alert("Le nom et la description du partenaire sont obligatoires.");
+            if(editId === "" && globalPartnerUploadedBase64 === "") return alert("Veuillez charger un logo.");
+
+            if(editId !== "") {
+                const idx = partners.findIndex(p => p.id === editId);
+                if(idx !== -1) {
+                    partners[idx].name = name;
+                    partners[idx].desc = desc;
+                    partners[idx].link = link;
+                    if(globalPartnerUploadedBase64 !== "") partners[idx].logo = globalPartnerUploadedBase64;
+                    localStorage.setItem("uc_partners", JSON.stringify(partners));
+                    alert("✅ Partenaire modifié avec succès !");
+                }
+            } else {
+                const newPartner = {
+                    id: "p_" + Date.now(),
+                    name: name,
+                    desc: desc,
+                    link: link,
+                    logo: globalPartnerUploadedBase64
+                };
+                partners.push(newPartner);
+                localStorage.setItem("uc_partners", JSON.stringify(partners));
+                alert("🤝 Nouveau partenaire ajouté !");
+            }
+
+            resetPartnerForm();
+            renderAppContent();
+        }
+
+        function initEditPartner(id) {
+            const partners = JSON.parse(localStorage.getItem("uc_partners")) || [];
+            const partner = partners.find(p => p.id === id);
+            if(!partner) return;
+
+            document.getElementById("editPartnerId").value = partner.id;
+            document.getElementById("newPartnerName").value = partner.name;
+            document.getElementById("newPartnerDesc").value = partner.desc;
+            document.getElementById("newPartnerLink").value = partner.link;
+            
+            const preview = document.getElementById("partnerImageUploadPreview");
+            preview.src = partner.logo;
+            preview.style.display = "block";
+            
+            document.getElementById("partnerFormTitle").textContent = "✏️ Modifier le partenaire : " + partner.name;
+            document.getElementById("cancelPartnerEditBtn").style.display = "inline-flex";
+            window.scrollTo({
+                top: document.getElementById("partnerFormTitle").offsetTop - 140,
+                behavior: 'smooth'
+            });
+        }
+
+        function resetPartnerForm() {
+            document.getElementById("editPartnerId").value = "";
+            document.getElementById("newPartnerName").value = "";
+            document.getElementById("newPartnerDesc").value = "";
+            document.getElementById("newPartnerLink").value = "";
+            document.getElementById("partnerFileInput").value = "";
+            document.getElementById("partnerImageUploadPreview").style.display = "none";
+            globalPartnerUploadedBase64 = "";
+            
+            document.getElementById("partnerFormTitle").textContent = "Ajouter un nouveau partenaire";
+            document.getElementById("cancelPartnerEditBtn").style.display = "none";
+        }
+
+        function addCustomTestimonial() {
+            const testimonials = JSON.parse(localStorage.getItem("uc_testimonials"));
+            const newTestimonial = {
+                quote: document.getElementById("newTestQuote").value.trim(),
+                author: document.getElementById("newTestAuthor").value.trim(),
+                role: document.getElementById("newTestRole").value.trim()
+            };
+
+            if(!newTestimonial.quote || !newTestimonial.author) return alert("Le contenu et l'auteur sont requis.");
+
+            testimonials.push(newTestimonial);
+            localStorage.setItem("uc_testimonials", JSON.stringify(testimonials));
+            
+            document.getElementById("newTestQuote").value = "";
+            document.getElementById("newTestAuthor").value = "";
+            document.getElementById("newTestRole").value = "";
+
+            renderAppContent();
+            alert("💬 Nouveau témoignage ajouté avec succès !");
+        }
+
+        function deleteCmsItem(type, id) {
+            if(confirm("Confirmez-vous la suppression de cet élément ?")) {
+                if(type === 'service') {
+                    let services = JSON.parse(localStorage.getItem("uc_services"));
+                    services = services.filter(s => s.id !== id);
+                    localStorage.setItem("uc_services", JSON.stringify(services));
+                } else if(type === 'project') {
+                    let projects = JSON.parse(localStorage.getItem("uc_projects"));
+                    projects = projects.filter(p => p.id !== id);
+                    localStorage.setItem("uc_projects", JSON.stringify(projects));
+                } else if(type === 'beforeAfter') {
+                    let list = JSON.parse(localStorage.getItem("uc_before_after")) || [];
+                    list = list.filter(item => item.id !== id);
+                    localStorage.setItem("uc_before_after", JSON.stringify(list));
+                    if(document.getElementById("editBaId").value === id) resetBeforeAfterForm();
+                } else if(type === 'partner') {
+                    let partners = JSON.parse(localStorage.getItem("uc_partners")) || [];
+                    partners = partners.filter(p => p.id !== id);
+                    localStorage.setItem("uc_partners", JSON.stringify(partners));
+                    if(document.getElementById("editPartnerId").value === id) resetPartnerForm();
+                } else if(type === 'testimonial') {
+                    let testimonials = JSON.parse(localStorage.getItem("uc_testimonials"));
+                    testimonials.splice(parseInt(id), 1);
+                    localStorage.setItem("uc_testimonials", JSON.stringify(testimonials));
+                } else if(type === 'visit') {
+                    let visits = JSON.parse(localStorage.getItem("uc_site_visits")) || [];
+                    visits = visits.filter(v => v.id !== id);
+                    localStorage.setItem("uc_site_visits", JSON.stringify(visits));
+                }
+                renderAppContent();
+            }
+        }
+
+        // ==========================================
+        // UI UTILITIES & FRAMEWORK CONTROLLERS
+        // ==========================================
+        function initThemeEngine() {
+            const themeToggle = document.getElementById("themeToggle");
+            const themeIcon = document.getElementById("themeIcon");
+            let currentTheme = localStorage.getItem("uc-theme") || "light";
+            
+            document.documentElement.setAttribute("data-theme", currentTheme);
+            themeIcon.textContent = currentTheme === "light" ? "🌙" : "☀️";
+
+            themeToggle.addEventListener("click", () => {
+                currentTheme = document.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light";
+                document.documentElement.setAttribute("data-theme", currentTheme);
+                localStorage.setItem("uc-theme", currentTheme);
+                themeIcon.textContent = currentTheme === "light" ? "🌙" : "☀️";
+            });
+        }
+
+        function initI18nEngine() {
+            const langSelect = document.getElementById("langSelect");
+            let userLang = localStorage.getItem("uc-lang") || "fr";
+            
+            langSelect.value = userLang;
+            applyTranslations(userLang);
+
+            langSelect.addEventListener("change", (e) => {
+                userLang = e.target.value;
+                localStorage.setItem("uc-lang", userLang);
+                applyTranslations(userLang);
+                renderAppContent();
+            });
+
+            function applyTranslations(lang) {
+                document.querySelectorAll("[data-i18n]").forEach(element => {
+                    const key = element.getAttribute("data-i18n");
+                    if (I18N_DICTIONARY[lang] && I18N_DICTIONARY[lang][key]) {
+                        if (element.tagName === "INPUT" || element.tagName === "TEXTAREA") {
+                            element.placeholder = I18N_DICTIONARY[lang][key];
+                        } else {
+                            element.textContent = I18N_DICTIONARY[lang][key];
+                        }
+                    }
+                });
+            }
+        }
+
+        function initNavigationDrawer() {
+            const burgerBtn = document.getElementById('burgerBtn');
+            const drawer = document.getElementById('drawer');
+            const overlay = document.getElementById('overlay');
+            const drawerLinks = document.querySelectorAll('.drawer-link');
+
+            function toggleMenu() {
+                burgerBtn.classList.toggle('active');
+                drawer.classList.toggle('active');
+                overlay.classList.toggle('active');
+            }
+
+            burgerBtn.addEventListener('click', toggleMenu);
+            overlay.addEventListener('click', toggleMenu);
+            drawerLinks.forEach(link => link.addEventListener('click', toggleMenu));
+        }
+
+        function setupSmoothScroll() {
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    if(currentAppState === 'admin') routeTo('public');
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if(target) {
+                        window.scrollTo({
+                            top: target.offsetTop - (window.innerWidth < 768 ? 130 : 85),
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        }
+
+        function initValidationFormEngine() {
+            const form = document.getElementById("whatsappForm");
+
+            form.addEventListener("submit", function(e) {
+                e.preventDefault();
+                let isFormValid = true;
+                
+                const fields = [
+                    { id: "name", errId: "nameError", valid: val => val.trim().length >= 3 },
+                    { id: "phone", errId: "phoneError", valid: val => val.trim().length >= 9 },
+                    { id: "projectType", errId: "projectTypeError", valid: val => val !== "" },
+                    { id: "message", errId: "messageError", valid: val => val.trim().length >= 10 }
+                ];
+
+                fields.forEach(field => {
+                    const inputEl = document.getElementById(field.id);
+                    const errorEl = document.getElementById(field.errId);
+                    
+                    if (!field.valid(inputEl.value)) {
+                        errorEl.style.display = "block";
+                        inputEl.classList.add("invalid");
+                        isFormValid = false;
+                    } else {
+                        errorEl.style.display = "none";
+                        inputEl.classList.remove("invalid");
+                    }
+                });
+
+                if (isFormValid) {
+                    const config = JSON.parse(localStorage.getItem("uc_config"));
+                    const name = document.getElementById("name").value.trim();
+                    const phone = document.getElementById("phone").value.trim();
+                    const projectType = document.getElementById("projectType").value;
+                    const message = document.getElementById("message").value.trim();
+
+                    const textMessage = 
+                        `*NOUVELLE DEMANDE DE DEVIS — ${config.companyName}*\n` +
+                        `----------------------------------------\n` +
+                        `• *Client* : ${name}\n` +
+                        `• *Téléphone* : ${phone}\n` +
+                        `• *Expertise demandée* : ${projectType}\n\n` +
+                        `*Description abrégée du projet :*\n${message}`;
+
+                    const targetUrl = `https://wa.me/${config.whatsappNumber}?text=${encodeURIComponent(textMessage)}`;
+                    window.open(targetUrl, '_blank');
+                }
+            });
+        }
+    </script>
+</body>
+</html>
