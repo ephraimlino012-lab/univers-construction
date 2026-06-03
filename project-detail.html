@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>Détail du Projet | Univers Construction</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- VARIABLES DESIGN SYSTEM --- */
+        :root[data-theme="light"] {
+            --primary: #0A2540;       
+            --primary-rgb: 10, 37, 64;
+            --accent: #D4AF37;        
+            --accent-hover: #AA841A;
+            --whatsapp: #25D366;
+            --bg-main: #FFFFFF;
+            --bg-surface: #F8FAFC;
+            --bg-card: #FFFFFF;
+            --text-main: #0F172A;
+            --text-muted: #475569;
+            --border: #E2E8F0;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.02);
+            --shadow: 0 10px 30px -10px rgba(10, 37, 64, 0.08);
+            --shadow-lg: 0 20px 40px -15px rgba(10, 37, 64, 0.12);
+            --header-bg: rgba(255, 255, 255, 0.9);
+            --danger: #EF4444;
+            --success: #10B981;
+        }
+
+        :root[data-theme="dark"] {
+            --primary: #00D4B2;       
+            --primary-rgb: 0, 212, 178;
+            --accent: #E5C158;        
+            --accent-hover: #F3D370;
+            --whatsapp: #2ec96b;
+            --bg-main: #090D16;
+            --bg-surface: #111726;
+            --bg-card: #1A2333;
+            --text-main: #F8FAFC;
+            --text-muted: #94A3B8;
+            --border: #243147;
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.2);
+            --shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.3);
+            --shadow-lg: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+            --header-bg: rgba(9, 13, 22, 0.9);
+            --danger: #F87171;
+            --success: #34D399;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: var(--text-main);
+            background-color: var(--bg-main);
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        body {
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        button { font-family: inherit; background: none; border: none; outline: none; }
+
+        .container {
+            width: 100%;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+
+        /* --- HEADER --- */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: var(--header-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 1000;
+            border-bottom: 1px solid var(--border);
+            padding: 12px 0;
+            height: 80px;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .logo {
+            font-size: 1rem;
+            font-weight: 800;
+            cursor: pointer;
+            color: var(--primary);
+        }
+
+        .logo span { color: var(--accent); }
+
+        .back-btn {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            height: 44px;
+            width: 44px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .back-btn:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        /* --- MAIN CONTENT --- */
+        main {
+            padding-top: 100px;
+            padding-bottom: 60px;
+            min-height: 100vh;
+        }
+
+        /* --- HERO IMAGE --- */
+        .project-hero {
+            width: 100%;
+            height: 300px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            margin-bottom: 32px;
+        }
+
+        /* --- PROJECT HEADER --- */
+        .project-header {
+            margin-bottom: 32px;
+        }
+
+        .project-tag {
+            display: inline-block;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: var(--accent);
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .project-header h1 {
+            font-size: 2rem;
+            color: var(--text-main);
+            margin-bottom: 12px;
+            line-height: 1.3;
+        }
+
+        .project-meta {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-top: 20px;
+            padding: 20px;
+            background: var(--bg-surface);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .meta-item h4 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .meta-item p {
+            color: var(--text-main);
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        /* --- DESCRIPTION --- */
+        .project-description {
+            margin-bottom: 40px;
+        }
+
+        .project-description h2 {
+            font-size: 1.4rem;
+            color: var(--text-main);
+            margin-bottom: 16px;
+        }
+
+        .project-description p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.7;
+            margin-bottom: 16px;
+        }
+
+        /* --- FEATURES --- */
+        .project-features {
+            margin-bottom: 40px;
+        }
+
+        .project-features h2 {
+            font-size: 1.4rem;
+            color: var(--text-main);
+            margin-bottom: 20px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .feature-item {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            padding: 16px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .feature-icon {
+            font-size: 1.4rem;
+            flex-shrink: 0;
+        }
+
+        .feature-item p {
+            color: var(--text-main);
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        /* --- GALLERY --- */
+        .project-gallery {
+            margin-bottom: 40px;
+        }
+
+        .project-gallery h2 {
+            font-size: 1.4rem;
+            color: var(--text-main);
+            margin-bottom: 20px;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+        }
+
+        .gallery-item {
+            width: 100%;
+            height: 250px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* --- LIGHTBOX --- */
+        .lightbox {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.95);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox-content {
+            position: relative;
+            width: 100%;
+            max-width: 90%;
+            max-height: 80vh;
+        }
+
+        .lightbox-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #fff;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+        }
+
+        .lightbox-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .lightbox-nav {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 12px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 12px 16px;
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+        }
+
+        .lightbox-nav button {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .lightbox-nav button:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* --- CTA SECTION --- */
+        .project-cta {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            padding: 28px 16px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .project-cta h2 {
+            font-size: 1.4rem;
+            color: var(--text-main);
+            margin-bottom: 12px;
+        }
+
+        .project-cta p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 24px;
+            line-height: 1.6;
+        }
+
+        .cta-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 48px;
+            padding: 14px 28px;
+            font-weight: 700;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            box-shadow: var(--shadow-sm);
+            text-decoration: none;
+            border: none;
+        }
+
+        .btn-primary {
+            background-color: var(--accent);
+            color: #0A2540;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .btn-secondary {
+            background-color: var(--bg-card);
+            border: 2px solid var(--accent);
+            color: var(--accent);
+            width: 100%;
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--bg-surface);
+            transform: translateY(-2px);
+        }
+
+        .btn-whatsapp {
+            background-color: var(--whatsapp);
+            color: #fff;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-whatsapp:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (min-width: 768px) {
+            .container { max-width: 1200px; padding: 0 24px; }
+            .project-header h1 { font-size: 2.5rem; }
+            .project-meta { grid-template-columns: repeat(4, 1fr); }
+            .features-grid { grid-template-columns: repeat(3, 1fr); }
+            .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+            .project-hero { height: 400px; }
+            .cta-buttons { flex-direction: row; }
+            .btn { width: auto; flex: 1; }
+        }
+
+        @media (min-width: 1024px) {
+            .gallery-grid { grid-template-columns: repeat(4, 1fr); }
+            .project-hero { height: 500px; }
+        }
+
+        /* --- LOADING & ERROR --- */
+        .error-message {
+            background: var(--danger);
+            color: white;
+            padding: 16px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="container nav-container">
+        <button class="back-btn" onclick="window.history.back()" title="Retour">
+            ← 
+        </button>
+        <div class="logo" onclick="window.location.href='index.html'">
+            UNIVERS<span>CONSTRUCTION</span>
+        </div>
+        <div style="width: 44px;"></div>
+    </div>
+</header>
+
+<main>
+    <div class="container">
+        <div id="projectContainer">
+            <div class="loading">Chargement du projet...</div>
+        </div>
+    </div>
+</main>
+
+<!-- LIGHTBOX GALLERY -->
+<div class="lightbox" id="lightbox">
+    <div class="lightbox-content">
+        <img id="lightboxImage" class="lightbox-image" src="" alt="Project image">
+        <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+        <div class="lightbox-nav">
+            <button onclick="previousImage()">← Précédent</button>
+            <span id="imageCounter" style="color: white; padding: 0 8px; display: flex; align-items: center;"></span>
+            <button onclick="nextImage()">Suivant →</button>
+        </div>
+    </div>
+</div>
+
+<script src="project-data.js"></script>
+<script>
+    // State du lightbox
+    let currentGalleryImages = [];
+    let currentImageIndex = 0;
+    let currentLang = localStorage.getItem('language') || 'fr';
+
+    /**
+     * Charge et affiche les détails du projet
+     */
+    function loadProjectDetail() {
+        // Récupère l'ID du projet depuis l'URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const projectId = urlParams.get('id');
+
+        if (!projectId) {
+            displayError('ID du projet manquant');
+            return;
+        }
+
+        const project = getProjectById(parseInt(projectId));
+
+        if (!project) {
+            displayError('Projet non trouvé');
+            return;
+        }
+
+        // Stocke les images de la galerie
+        currentGalleryImages = project.gallery || [];
+
+        // Affiche le projet
+        displayProject(project);
+
+        // Applique la langue
+        applyLanguage(currentLang);
+    }
+
+    /**
+     * Affiche le projet
+     */
+    function displayProject(project) {
+        const container = document.getElementById('projectContainer');
+        
+        const featuresHTML = (project.features[currentLang] || project.features.fr)
+            .map(feature => `
+                <div class="feature-item">
+                    <span class="feature-icon">✓</span>
+                    <p>${feature}</p>
+                </div>
+            `).join('');
+
+        const galleryHTML = project.gallery
+            .map((img, index) => `
+                <div class="gallery-item" 
+                     style="background-image: url('${img}')"
+                     onclick="openLightbox(${index})"
+                     title="Cliquer pour agrandir">
+                </div>
+            `).join('');
+
+        container.innerHTML = `
+            <!-- Image Hero -->
+            <div class="project-hero" style="background-image: url('${project.image}')"></div>
+
+            <!-- Titre du projet -->
+            <div class="project-header">
+                <span class="project-tag">${getTranslatedText(project.category, currentLang)}</span>
+                <h1>${getTranslatedText(project.title, currentLang)}</h1>
+                
+                <div class="project-meta">
+                    <div class="meta-item">
+                        <h4>Localisation</h4>
+                        <p>${project.location}</p>
+                    </div>
+                    <div class="meta-item">
+                        <h4>Budget</h4>
+                        <p>${project.budget}</p>
+                    </div>
+                    <div class="meta-item">
+                        <h4>Durée</h4>
+                        <p>${getTranslatedText(project.duration, currentLang)}</p>
+                    </div>
+                    <div class="meta-item">
+                        <h4>Statut</h4>
+                        <p>${getTranslatedText(project.status, currentLang)}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Description -->
+            <div class="project-description">
+                <h2>Description du projet</h2>
+                <p>${getTranslatedText(project.description, currentLang)}</p>
+            </div>
+
+            <!-- Caractéristiques -->
+            <div class="project-features">
+                <h2>Caractéristiques principales</h2>
+                <div class="features-grid">
+                    ${featuresHTML}
+                </div>
+            </div>
+
+            <!-- Galerie -->
+            <div class="project-gallery">
+                <h2>Galerie du projet</h2>
+                <div class="gallery-grid">
+                    ${galleryHTML}
+                </div>
+            </div>
+
+            <!-- CTA Section -->
+            <div class="project-cta">
+                <h2>Intéressé par ce projet ?</h2>
+                <p>Contactez-nous pour plus d'informations ou pour demander un devis personnalisé.</p>
+                <div class="cta-buttons">
+                    <button class="btn btn-primary" onclick="requestQuote(${project.id})">
+                        📋 Demander un devis
+                    </button>
+                    <button class="btn btn-whatsapp" onclick="contactWhatsApp('${project.id}')">
+                        💬 Contacter via WhatsApp
+                    </button>
+                </div>
+            </div>
+        `;
+    }
+
+    /**
+     * Ouvre le lightbox à l'index spécifié
+     */
+    function openLightbox(index) {
+        currentImageIndex = index;
+        const lightbox = document.getElementById('lightbox');
+        const image = document.getElementById('lightboxImage');
+        
+        image.src = currentGalleryImages[currentImageIndex];
+        updateImageCounter();
+        lightbox.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    /**
+     * Ferme le lightbox
+     */
+    function closeLightbox() {
+        const lightbox = document.getElementById('lightbox');
+        lightbox.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    /**
+     * Image suivante
+     */
+    function nextImage() {
+        currentImageIndex = (currentImageIndex + 1) % currentGalleryImages.length;
+        const image = document.getElementById('lightboxImage');
+        image.src = currentGalleryImages[currentImageIndex];
+        updateImageCounter();
+    }
+
+    /**
+     * Image précédente
+     */
+    function previousImage() {
+        currentImageIndex = (currentImageIndex - 1 + currentGalleryImages.length) % currentGalleryImages.length;
+        const image = document.getElementById('lightboxImage');
+        image.src = currentGalleryImages[currentImageIndex];
+        updateImageCounter();
+    }
+
+    /**
+     * Met à jour le compteur d'images
+     */
+    function updateImageCounter() {
+        const counter = document.getElementById('imageCounter');
+        counter.textContent = `${currentImageIndex + 1} / ${currentGalleryImages.length}`;
+    }
+
+    /**
+     * Demander un devis
+     */
+    function requestQuote(projectId) {
+        const urlParams = new URLSearchParams(window.location.search);
+        const projectId = urlParams.get('id');
+        const project = getProjectById(parseInt(projectId));
+        
+        // Stocke le projet sélectionné en session
+        sessionStorage.setItem('selectedProjectId', projectId);
+        
+        // Redirige vers la section devis
+        window.location.href = `index.html#devis?project=${projectId}`;
+    }
+
+    /**
+     * Contact via WhatsApp
+     */
+    function contactWhatsApp(projectId) {
+        const project = getProjectById(parseInt(projectId));
+        const projectTitle = getTranslatedText(project.title, currentLang);
+        const phoneNumber = '243123456789'; // À remplacer par le vrai numéro
+        const message = encodeURIComponent(
+            `Bonjour, je suis intéressé par votre projet: ${projectTitle}\n\nPouvez-vous me fournir plus d'informations?`
+        );
+        
+        window.open(`https://wa.me/${phoneNumber}?text=${message}`, '_blank');
+    }
+
+    /**
+     * Affiche un message d'erreur
+     */
+    function displayError(message) {
+        const container = document.getElementById('projectContainer');
+        container.innerHTML = `<div class="error-message">${message}</div>`;
+    }
+
+    /**
+     * Applique la langue
+     */
+    function applyLanguage(lang) {
+        currentLang = lang;
+        localStorage.setItem('language', lang);
+        loadProjectDetail();
+    }
+
+    /**
+     * Gère la touche Échap pour fermer le lightbox
+     */
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            closeLightbox();
+        }
+        if (e.key === 'ArrowLeft' && document.getElementById('lightbox').classList.contains('active')) {
+            previousImage();
+        }
+        if (e.key === 'ArrowRight' && document.getElementById('lightbox').classList.contains('active')) {
+            nextImage();
+        }
+    });
+
+    // Charge le projet au chargement de la page
+    loadProjectDetail();
+</script>
+
+</body>
+</html>
